@@ -1,6 +1,6 @@
 # Home Assistant configuration
 
-:house_with_garden: My configuration of the powerful [Home Assistant](https://home-assistant.io/)
+:house_with_garden: My config of the powerful [Home Assistant](https://home-assistant.io/)
 
 :star2: my repo to follow the updates. :hourglass_flowing_sand: Work in progress...
 
@@ -10,7 +10,7 @@
 ### Initial view
 * Custom summary card that I created to show information in a easy way ([state-card](https://github.com/maattdiy/home-assistant-config/blob/master/www/custom_ui/state-card-value_only.html) and [summary.py](https://github.com/maattdiy/home-assistant-config/blob/master/python_scripts/summary.py))
 * Painel control with buttons for the main actions, emulating a universal remote control (uses a custom [state-card](https://community.home-assistant.io/t/custom-ui-button-panel/29513))
-* Vibes panel (with the same custom state-card) for play: K-Pop, Podcasts, Barney's Get Psyched Mix, Rain and Nature sounds (white noise)
+* Vibes panel (with the same custom state-card) to play: K-Pop, Podcasts, Barney's Get Psyched Mix, Rain and Nature sounds (white noise)
 
 ![Main](https://github.com/maattdiy/home-assistant-config/raw/master/screenshots/main.png)
 
