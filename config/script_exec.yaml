@@ -1,0 +1,11 @@
+## https://home-assistant.io/components/notify/
+## https://home-assistant.io/components/notify.pushbullet/
+## https://github.com/CCOSTAN/Home-AssistantConfig/blob/7227c4a0371d84c1af865b08590dca8eb1030cf1/script/ifttt_notify.yaml
+
+script:
+  exec:
+    sequence:
+      - service: script.mp_set
+        data_template:
+          message: "{{ msg }}"
+          ##target: [ "channel/maatt" ]

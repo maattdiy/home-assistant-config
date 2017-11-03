@@ -1,0 +1,29 @@
+## Sleep HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    script.sleep:
+      icon: mdi:sleep
+      can_cancel: false
+
+    
+##################################################
+## Scripts
+##################################################
+
+script:
+  sleep:
+    alias: Sleep
+    sequence:    
+      - service: switch.turn_off
+        entity_id: switch.pc_me_monitor
+      - service_template: >
+          {% if is_state('input_boolean.onsleep_music', 'on') %}
+            script.mp_relax01
+          {% endif %}
+      - delay: '00:{{ states.input_number.onsleep_delay.state | int }}:00'
+      - service: script.all_off

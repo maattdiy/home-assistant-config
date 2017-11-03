@@ -1,0 +1,51 @@
+## Devices (TVs) HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    switch.ac_template:
+      friendly_name: 'AC'
+      icon: mdi:fan
+      show_last_changed: true
+
+
+##################################################
+## Switchs
+##################################################
+
+## https://home-assistant.io/components/switch.template/
+switch:
+  - platform: template
+    friendly_name: AC
+    switches:
+      ac_template:
+        value_template: "{{ is_state('switch.ac', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.ac
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.ac
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  ac_hot:
+    alias: AC Hot
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.ac
+      - service: switch.turn_on
+        entity_id: switch.ac_hot
+  ac_cold:
+    alias: AC Cold
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.ac
+      - service: switch.turn_on
+        entity_id: switch.ac_cold

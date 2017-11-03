@@ -1,0 +1,35 @@
+## Device Tracker Module
+## https://home-assistant.io/components/device_tracker/
+
+
+##################################################
+## Components
+##################################################
+
+device_tracker:
+  - platform: owntracks
+  #- platform: bluetooth_tracker
+
+  ## https://home-assistant.io/components/device_tracker.nmap_tracker/
+  - platform: nmap_tracker
+    hosts: 192.168.0.1/24
+    track_new_devices: no
+    interval_seconds: 120
+    exclude:
+      - 192.168.0.1
+      - 192.168.0.2
+
+
+##################################################
+## Graphs
+##################################################
+
+history_graph:
+  people:
+    name: People
+    entities:
+      - device_tracker.phone01_phone01
+      - device_tracker.iphonedemario
+      - device_tracker.phone_mother
+    hours_to_show: 48
+    refresh: 60

@@ -1,0 +1,32 @@
+## Date HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+##################################################
+## Sensors
+##################################################
+  
+## https://community.home-assistant.io/t/custom-countdown-component/19029
+
+sensor:
+  - platform: date_countdown
+    name: Countdown1
+    date: "29-11-2019 19:00"
+  
+  - platform: template
+    sensors:
+      countdown1_days:
+        friendly_name: 'Ap countdown'
+        value_template: '{{ states.sensor.Countdown1.attributes.days }}'
+        unit_of_measurement: 'days'
+
+## https://home-assistant.io/components/binary_sensor/
+## https://home-assistant.io/components/binary_sensor.workday/
+## https://pypi.python.org/pypi/holidays
+
+binary_sensor:
+  - platform: workday
+    country: US
+    excludes: holiday

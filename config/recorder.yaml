@@ -1,0 +1,4 @@
+## https://home-assistant.io/components/recorder/
+
+  purge_interval: 2
+  purge_keep_days: 10

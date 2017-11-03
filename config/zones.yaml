@@ -1,0 +1,19 @@
+# http://www.latlong.net/
+
+- name: Home
+  latitude: !secret home_lat
+  longitude: !secret home_long
+  radius: 250
+  icon: mdi:home
+
+- name: Work
+  latitude: !secret work_lat
+  longitude: !secret work_long
+  radius: 250
+  icon: mdi:worker
+
+- name: GF
+  latitude: !secret gf_lat
+  longitude: !secret gf_long
+  radius: 500
+  icon: mdi:image-filter-hdr

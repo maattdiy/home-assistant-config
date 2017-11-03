@@ -1,0 +1,40 @@
+# https://home-assistant.io/components/sensor.history_stats/
+
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    sensor.stats_tv1:
+      icon: mdi:theater
+      friendly_name: 'TV (7 days)'
+      
+    sensor.stats_work1:
+      icon: mdi:domain
+      friendly_name: 'Working (7 days)'
+
+
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: history_stats
+    name: stats_tv1
+    entity_id: switch.tv_template
+    state: 'on'
+    type: time
+    end: '{{ now() }}'
+    duration:
+      days: 7
+
+  - platform: history_stats
+    name: stats_work1
+    entity_id: device_tracker.phone01_phone01
+    state: 'Work'
+    type: time
+    end: '{{ now() }}'
+    duration:
+      days: 7

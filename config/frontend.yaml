@@ -1,0 +1,10 @@
+## https://home-assistant.io/components/frontend/
+## https://home-assistant.io/developers/frontend_creating_custom_ui/
+
+  extra_html_url:
+    - /local/custom_ui/state-card-value_only.html
+    - /local/custom_ui/state-card-custom-ui.html
+    - /local/custom_ui/state-card-button-panel.html
+    - /local/custom_ui/state-card-table.html
+
+  themes: !include frontend_themes.yaml

@@ -1,0 +1,67 @@
+## Devices status HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:  
+    sensor.broadlink_template:
+      custom_ui_state_card: state-card-custom-ui
+      extra_data_template: !secret ip_broadlink
+    sensor.androidtv_template:
+      custom_ui_state_card: state-card-custom-ui
+      extra_data_template: !secret ip_androidtv
+    sensor.tv_template:
+      custom_ui_state_card: state-card-custom-ui
+      extra_data_template: !secret ip_tv
+
+
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: template
+    sensors:
+      broadlink_template:
+        friendly_name: 'Broadlink (IR)'
+        value_template: "{{ 'on' if is_state('device_tracker.broadlink', 'home') else 'off' }}"
+        icon_template: "{{ 'mdi:remote' if is_state('device_tracker.broadlink', 'home') else 'mdi:close-circle' }}"
+      
+  - platform: template
+    sensors:
+      androidtv_template:
+        friendly_name: 'Android TV'
+        value_template: "{{ 'on' if is_state('device_tracker.androidtv', 'home') else 'off' }}"
+        icon_template: "{{ 'mdi:android' if is_state('device_tracker.androidtv', 'home') else 'mdi:close-circle' }}"
+
+  - platform: template
+    sensors:
+      tv_template:
+        friendly_name: 'TV'
+        value_template: "{{ 'on' if is_state('device_tracker.tv', 'home') else 'off' }}"
+        icon_template: "{{ 'mdi:monitor' if is_state('device_tracker.tv', 'home') else 'mdi:close-circle' }}"
+        
+
+##################################################
+## Automations
+##################################################
+
+## https://github.com/CCOSTAN/Home-AssistantConfig/blob/a2485d167bdd0892617797fa8a0a87ce2a5eb9f2/automation/System/device_status.yaml
+
+automation:
+  - alias: 'Device Status'
+    hide_entity: True
+    trigger:
+      - platform: state
+        entity_id:
+          - sensor.broadlink_template
+          #- sensor.androidtv_template
+        to: 'off_x'
+        for:
+          minutes: 10
+    action:
+      - service: script.notify_plus
+        data_template:
+          msg: "{{ trigger.entity_id.split('.')[1]|replace('_template', '') }} is {{ trigger.to_state.state }}"

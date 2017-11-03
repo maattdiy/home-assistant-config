@@ -1,0 +1,11 @@
+## https://home-assistant.io/components/http/
+
+  api_password: !secret http_password
+  ip_ban_enabled: True
+  login_attempts_threshold: 5
+  trusted_networks:
+    - 127.0.0.1
+    - ::1
+    - 192.168.0.0/24
+  #ssl_certificate: !secret ssl_path
+  #ssl_key: !secret ssl_key

@@ -1,0 +1,38 @@
+## Internet HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    sensor.speedtest_ping:
+      icon: mdi:clock-fast
+      friendly_name: 'Ping'
+    sensor.speedtest_download:
+      icon: mdi:arrow-down
+      friendly_name: 'Download'
+    sensor.speedtest_upload:
+      icon: mdi:arrow-up
+      friendly_name: 'Upload'
+
+##################################################
+## Sensors
+##################################################
+
+## https://home-assistant.io/components/sensor.speedtest/
+sensor:
+  - platform: speedtest
+    minute: 
+      - 0
+      - 30
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+
+## https://home-assistant.io/components/sensor.rest/
+  - platform: rest
+    resource: http://ip.jsontest.com
+    name: External IP
+    value_template: '{{ value_json.ip }}'

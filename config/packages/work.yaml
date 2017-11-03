@@ -1,0 +1,23 @@
+## Work HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    script.work:
+      icon: mdi:account-network
+
+    
+##################################################
+## Scripts
+##################################################
+
+script:
+  work:
+    alias: Work
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.pc_me_monitor
+      - service: shell_command.pc_me_work

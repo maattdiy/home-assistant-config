@@ -1,0 +1,20 @@
+## https://home-assistant.io/components/notify/
+
+notify:
+  - platform: pushbullet
+    name: push
+    api_key: !secret pushbullet_key
+
+  ## https://home-assistant.io/components/notify.telegram/
+  - platform: telegram
+    name: telegram
+    chat_id: !secret telegram_chat_id01
+
+
+sensor:
+  ## https://home-assistant.io/components/sensor.pushbullet/
+  - platform: pushbullet
+    api_key: !secret pushbullet_key
+    monitored_conditions:
+      - title
+      - body

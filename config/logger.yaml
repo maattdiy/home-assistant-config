@@ -1,0 +1,6 @@
+## https://home-assistant.io/components/logger/
+## critical fatal error warning warn info debug notset
+
+  default: warning
+  logs:
+    homeassistant.components.device_tracker.mqtt: warning

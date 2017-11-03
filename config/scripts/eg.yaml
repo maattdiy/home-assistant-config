@@ -1,0 +1,7 @@
+## https://community.home-assistant.io/t/sending-message-to-eventghost-webserver/401
+
+eg:
+  sequence:
+    - service: notify.push
+      data_template:
+        message: "http://192.168.0.100:70?{{ msg }}"

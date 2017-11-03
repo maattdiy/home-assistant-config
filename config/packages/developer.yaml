@@ -1,0 +1,25 @@
+## Scripts (Developer) HASS Module
+
+##################################################
+## Customize
+##################################################
+
+homeassistant:
+  customize:
+    script.refresh:
+      icon: mdi:refresh
+      #show_last_changed: true
+    script.ir_learn:
+      icon: mdi:remote
+      #show_last_changed: true
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  refresh:
+    alias: Refresh
+    sequence:
+      - service: python_script.reload
+      - service: python_script.summary

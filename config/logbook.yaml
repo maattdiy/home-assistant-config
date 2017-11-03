@@ -1,0 +1,40 @@
+## https://home-assistant.io/components/logbook/
+
+exclude:
+  domains:
+    - sun
+    - weblink
+    - group
+    #- device_tracker
+  entities:
+    - sensor.last_boot
+    - sensor.since_last_boot
+    - sensor.since_last_boot_template
+    - sensor.date
+    - sensor.time
+    - sensor.time_template
+    - sensor.sun_template
+    - sensor.dark_sky_template
+    - sensor.dark_sky_hourly_summary
+    - sensor.dark_sky_daily_summary
+    - sensor.dark_sky_icon
+    - switch.tv_template
+    - sensor.tv_schedule_dw
+    - sensor.tv_schedule_live
+    - input_number.alarm_hour
+    - input_number.alarm_minute
+    - input_number.mp_volume
+    - sensor.workday
+    - sensor.phone01_location
+    - script.arrive_home
+    
+include:
+  domains:
+    - script
+    - notify
+    - switch
+  entities:
+    - device_tracker.phone01_phone01
+    - device_tracker.phone_love
+    - device_tracker.phone_mother
+    - device_tracker.phone_father

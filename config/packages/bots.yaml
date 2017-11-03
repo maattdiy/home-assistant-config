@@ -1,0 +1,46 @@
+## Bots HASS Module
+
+## https://community.home-assistant.io/t/telegram-inline-keyboard-broken/20268/3
+## https://core.telegram.org/bots
+
+
+##################################################
+## Components
+##################################################
+
+telegram_bot:
+  # https://home-assistant.io/components/notify.telegram/
+  # https://core.telegram.org/bots
+  - platform: polling
+    api_key: !secret telegram_key
+    allowed_chat_ids:
+      - !secret telegram_chat_id01
+
+
+##################################################
+## Automations
+##################################################
+
+automation:
+  - alias: Bot cmd 001
+    hide_entity: true
+    trigger:
+      - platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/tv'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.pc_me_monitor
+
+
+##################################################
+## Scripts
+##################################################
+
+##script:
+##  arrive_home:
+##    alias: Arrive Home
+##    sequence:            
+##      - service: switch.turn_on
+##        entity_id: switch.pc_me_monitor

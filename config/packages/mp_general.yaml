@@ -1,0 +1,164 @@
+## Media Player HASS Module
+
+## https://home-assistant.io/components/media_player/
+## https://home-assistant.io/components/media_player.clementine/
+
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    media_player.clementine_remote:
+      friendly_name: 'Player'
+      entity_picture: ''
+    media_player.clementine:
+      entity_picture: ''
+    media_player.spotify:
+      entity_picture: ''
+      
+    script.mp_playpause:
+      icon: mdi:play-pause
+      show_last_changed: true
+    script.mp_radio:
+      icon: mdi:radio
+    script.mp_podcast:
+      icon: mdi:account-multiple
+    script.mp_barney:
+      icon: mdi:fire
+    script.mp_relax01:
+      icon: mdi:cloud-outline
+    script.mp_nature:
+      icon: mdi:tree
+
+##################################################
+## Inputs
+##################################################
+
+input_number:
+  mp_volume:
+    name: Volume
+    icon: mdi:volume-medium
+    initial: 0.4
+    min: 0
+    max: 1
+    step: 0.01
+input_select:
+  mp_radio_station:
+    name: Station
+    icon: mdi:radio
+    options:
+     - PopTron
+     - 80s
+     - 90s
+     - Dance
+     - Sertanejo
+    initial: PopTron
+
+
+##################################################
+## Automations
+##################################################
+
+automation:
+  - alias: Media Player Volume
+    trigger:
+      platform: state
+      entity_id: input_number.mp_volume
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.clementine_remote
+          volume_level: '{{ trigger.to_state.state }}'
+
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  mp_playpause:
+    alias: Play/Pause
+    sequence:
+      - service: media_player.media_play_pause
+        entity_id: media_player.clementine_remote
+  mp_play:
+    alias: Play
+    sequence:
+      - service: media_player.media_play
+        entity_id: media_player.clementine_remote
+  mp_stop:
+    alias: Stop
+    sequence:
+      - service: media_player.media_stop
+        entity_id: media_player.clementine_remote
+  mp_next:
+    alias: Next
+    sequence:
+      - service: media_player.media_play_next
+        entity_id: media_player.clementine_remote
+
+  mp_set:
+    alias: Set Media Player
+    sequence:
+      - service: media_player.media_pause
+        entity_id: media_player.clementine_remote
+      - service: input_number.select_value
+        data_template:
+          entity_id: input_number.mp_volume
+          value: "{{ volume_level }}"
+      - service: media_player.select_source
+        data_template:
+          entity_id: media_player.clementine_remote
+          source: "{{ source }}"
+      - service: media_player.media_play
+        entity_id: media_player.clementine_remote
+
+  mp_radio:
+    alias: Radio
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Radio"
+          volume_level: 0.4
+
+  mp_wakeup:
+    alias: Wake Up
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Radio"
+          volume_level: 0.8
+          
+  mp_barney:
+    alias: Get Psyched Mix
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Get Psyched Mix"
+          volume_level: 0.5
+
+  mp_relax01:
+    alias: Relax
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Relax 01"
+          volume_level: 0.8
+
+  mp_nature:    
+    alias: Nature
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Nature"
+          volume_level: 0.9
+
+  mp_podcast:    
+    alias: Podcast
+    sequence:
+      - service: script.mp_set
+        data_template:
+          source: "Podcast"
+          volume_level: 0.9

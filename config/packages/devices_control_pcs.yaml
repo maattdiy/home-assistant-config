@@ -1,0 +1,40 @@
+## Devices Control (PCs) HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    switch.pc_me_monitor:
+      friendly_name: 'Monitor'
+      icon: mdi:monitor
+      show_last_changed: true
+
+
+##################################################
+## Switch
+##################################################
+
+switch:
+  ## https://home-assistant.io/components/switch.command_line/
+  - platform: command_line
+    friendly_name: Monitor
+    switches:
+      pc_me_monitor:
+        command_on: !secret eg_pc_me_monitor_on
+        command_off: !secret eg_pc_me_monitor_off
+
+
+##################################################
+## Shell Commands
+##################################################
+
+shell_command:
+  pc_me_work: !secret eg_pc_me_work
+
+
+##################################################
+## Scripts
+##################################################
+

@@ -1,0 +1,102 @@
+## Devices (TVs) HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:  
+    switch.tv_template:
+      friendly_name: 'TV'
+      icon: mdi:television
+      custom_ui_state_card: state-card-custom-ui
+      show_last_changed: true
+    switch.tv_mute_template:
+      friendly_name: 'TV Mute'
+      icon: mdi:volume-off
+      custom_ui_state_card: state-card-custom-ui
+      show_last_changed: true
+
+
+##################################################
+## Inputs
+##################################################
+
+# Canceled, implemented with buttons state-card
+#input_select:
+#  tv_channel:
+#    name: Channel
+#    icon: mdi:remote
+#    options:
+#     - ''
+#     - Netflix
+#     - Android
+#     - GNT
+#     - Discovery
+#    initial: ''
+
+
+##################################################
+## Switchs
+##################################################
+
+## https://home-assistant.io/components/switch.template/  
+switch:
+  - platform: template
+    switches:
+      tv_template:
+        value_template: "{{ is_state('switch.tv', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.tv
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.tv
+          
+  - platform: template
+    switches:
+      tv_mute_template:
+        value_template: "{{ is_state('switch.tv_mute', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          entity_id: switch.tv_mute
+        turn_off:
+          service: switch.turn_off
+          entity_id: switch.tv_mute
+
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  tv_antena:
+    alias: TV Antena
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.tv_antena
+  tv_h1:
+    alias: TV HDMI 1
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.tv_hdmi1
+  tv_h2:
+    alias: TV HDMI 2
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.tv_hdmi2
+  tv_mute:
+    alias: TV Mute
+    sequence:
+      - service: switch.toggle
+        entity_id: switch.tv_mute
+  tv_voldown:
+    alias: TV Volume Down
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.tv_volume_down
+  tv_volup:
+    alias: TV Volume Up
+    sequence:
+      - service: switch.turn_on
+        entity_id: switch.tv_volume_up

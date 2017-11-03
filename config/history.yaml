@@ -1,0 +1,18 @@
+## https://home-assistant.io/components/history/
+
+include:
+  entities:
+    - device_tracker.phone01_phone01
+    - device_tracker.phone_love
+    - device_tracker.phone_mother
+    - device_tracker.iphonedemario
+    - sensor.dark_sky_summary
+    - sensor.external_ip
+    - switch.tv_template
+    - switch.ac_template
+    - sensor.broadlink_template
+    - sensor.androidtv_template
+    - input_select.ha_mode
+    - media_player.clementine_remote
+    - sensor.speedtest_download
+    - sensor.speedtest_upload

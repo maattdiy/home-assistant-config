@@ -1,0 +1,85 @@
+## Devices Control (Phones) HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    sensor.phone01_location:
+      icon: mdi:map
+      show_last_changed: true
+    sensor.phone01_battery:
+      icon: mdi:battery-10    
+      friendly_name: 'Battery'
+      show_last_changed: true
+    sensor.phone01_lastupdate:
+      icon: mdi:av-timer
+    script.phone01_reboot:
+      icon: mdi:power
+    script.phone01_find:
+      icon: mdi:binoculars
+
+
+##################################################
+## Groups
+##################################################
+
+group:
+  devices_phone01:
+    name: Phone Markus
+    entities:
+      - sensor.phone01_location
+      - sensor.phone01_battery
+      - script.phone01_find
+      #- script.phone01_reboot
+
+      
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: mqtt
+    name: phone01_battery
+    state_topic: "owntracks/phone01/phone01"
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.batt }}"
+
+  - platform: template
+    sensors:
+      phone01_location:
+        friendly_name: "Location"
+        value_template: "{{ states.device_tracker.phone01_phone01.state }}"
+
+  # https://community.home-assistant.io/t/time-since-last-update/22422
+  - platform: template
+    sensors:
+      phone01_lastupdated:
+        friendly_name: 'Last update'
+        value_template: '{{ states.device_tracker.phone01_phone01.last_updated }}'
+
+
+##################################################
+## Shell Commands
+##################################################
+
+shell_command:
+  phone01_reboot: !secret ar_phone01_reboot
+  phone01_find: !secret ar_phone01_find
+
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  phone01_reboot:
+    alias: Reboot
+    sequence:
+      - service: shell_command.phone01_reboot
+  
+  phone01_find:
+    alias: Find
+    sequence:
+      - service: shell_command.phone01_find

@@ -1,0 +1,128 @@
+## Buttons Module
+## https://community.home-assistant.io/t/custom-ui-button-panel/29513
+## https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    script.remote_control:
+      custom_ui_state_card: state-card-button-panel
+      config:
+        columns: 7
+        cell_height: 75px
+        cell_width: 73px
+        entities:
+          # Line 1 - TV
+          - entity: switch.tv
+            caption: 
+            icon: mdi:monitor
+            column: 1
+            row: 1
+          - entity: script.tv_h1
+            icon: mdi:android
+            column: 2
+            row: 1
+          - entity: script.tv_antena
+            icon: mdi:radio-tower
+            column: 3
+            row: 1
+          - entity: switch.tv_mute
+            icon: mdi:volume-off
+            column: 4
+            row: 1          
+          - entity: script.tv_voldown
+            icon: mdi:mdi:volume-medium
+            column: 5
+            row: 1            
+          - entity: script.tv_volup
+            icon: mdi:mdi:volume-high
+            column: 6
+            row: 1
+            
+          # Line - AC
+          - entity: switch.ac
+            caption: 
+            icon: mdi:fan
+            column: 1
+            row: 2
+          - entity: script.ac_hot
+            icon: mdi:white-balance-sunny
+            column: 2
+            row: 2
+          - entity: script.ac_cold
+            icon: mdi:weather-windy
+            column: 3
+            row: 2
+            
+          # Others
+          - entity: script.mp_playpause
+            icon: mdi:play-pause
+            column: 1
+            row: 3
+          - entity: script.sleep
+            icon: mdi:sleep
+            column: 2
+            row: 3
+          - entity: script.all_off
+            icon: mdi:close-box-outline
+            column: 3
+            row: 3
+    
+    script.remote_control_vibes:
+      custom_ui_state_card: state-card-button-panel
+      config:
+        columns: 5
+        cell_height: 88px
+        cell_width: 88px
+        entities:
+          - entity: script.mp_radio
+            picture: /local/icons/kpop.png
+            column: 1
+            row: 1
+          - entity: script.mp_podcast          
+            picture: /local/icons/podcast.png
+            column: 2
+            row: 1
+          - entity: script.mp_barney
+            picture: /local/icons/barney.png
+            column: 3
+            row: 1
+          - entity: script.mp_relax01
+            picture: /local/icons/rain.png
+            column: 4
+            row: 1
+          - entity: script.mp_nature
+            picture: /local/icons/nature.png
+            column: 5
+            row: 1
+            
+
+##################################################
+## Groups
+##################################################
+
+group:
+  remote_control:
+    name: Control Panel
+    entities:
+      - script.remote_control
+
+  remote_control_vibes:
+    name: Vibes
+    entities:
+      - script.remote_control_vibes
+
+
+##################################################
+## Scripts
+##################################################
+            
+script:
+  remote_control:
+    sequence:
+  
+  remote_control_vibes:
+    sequence:

@@ -1,0 +1,12 @@
+test1:
+  alias: Test 1
+  sequence:
+    - service: notify.telegram
+      data:
+        title: '*Bem vindo*'
+        message: 'O que gostaria de fazer?'
+        data:
+          inline_keyboard:
+            - 'TV:/tv, Ar:/ac'
+            - 'Nada:/null'
+            #- 'Task 1:/command1, Task 1:/command1'

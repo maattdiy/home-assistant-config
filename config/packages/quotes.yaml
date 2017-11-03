@@ -1,0 +1,30 @@
+## Quotes HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    sensor.quote:
+      custom_ui_state_card: state-card-value_only
+
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: scrape
+    name: Quote
+    resource: 'http://frasedodia.net/'    
+    select: '.linkfrase'
+    value_template: '{{ value }}'
+
+## https://home-assistant.io/components/sensor.rest/
+## https://theysaidso.com/api/
+
+#sensor:
+#  - platform: rest
+#    resource: 'http://quotes.rest/qod.json?category=inspire'
+#    name: Quote
+#    value_template: '{{ value_json.contents.quotes[0].quote }}'

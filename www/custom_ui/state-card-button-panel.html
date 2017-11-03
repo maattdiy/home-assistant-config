@@ -1,0 +1,101 @@
+<dom-module id="state-card-button-panel">
+    <template>
+      <style>
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(var(--bp-columns), var(--bp-cell-width));
+          grid-auto-rows: var(--bp-cell-height);
+          grid-gap: 4px;
+        }
+        paper-button {          
+          box-shadow: none  !important;
+          margin: 0  !important;
+          background-color: var(--primary-color);
+          color: #fff;
+        }        
+        paper-button.on {
+          background-color: var(--google-green-500);
+        }
+        paper-button.off {
+          background-color: var(--google-red-500);
+        }
+      </style>
+      <paper-button-group class="grid" on-tap="stopPropagation">
+        <template is="dom-repeat" items="[[config.entities]]">
+          <paper-button raised class$="[[computeCellClass(hass, item)]]" style$="[[computeCellStyle(item)]]" on-click="callService">[[item.caption]]
+            <template is="dom-if" if="[[item.icon]]">
+              <iron-icon icon="[[item.icon]]"></iron-icon>
+            </template>            
+          </paper-button>
+        </template>
+      </paper-button-group>
+    </template>
+  </dom-module>
+  <script>
+    Polymer({
+      is: 'state-card-button-panel',
+      properties: {
+        hass: {
+          type: Object,
+          oberserver: 'hassChanged(hass, inDialog, stateObj)',
+        },
+        stateObj: {
+          type: Object,
+        },
+        inDialog: {
+          type: Boolean,
+          value: false,
+        },
+        config: {
+          type: Object,
+          computed: 'computeConfig(stateObj)',
+        },
+      },
+      ready: function () {
+        var container_state =  this.parentNode.parentNode;
+        var container_header = container_state.parentNode.previousSibling;
+        container_header.style.setProperty("cursor", "default");
+        container_state.style.setProperty("cursor", "default");
+        var config = this.config;
+        this.updateStyles({
+          "--bp-columns": config.columns ? config.columns : "3",
+          "--bp-cell-width": config.cell_width ? config.cell_width : "100px",
+          "--bp-cell-height": config.cell_height ? config.cell_height : "100px",
+        });
+      },
+      stopPropagation: function (e) {
+        e.stopPropagation();
+      },
+      computeConfig: function (stateObj) {     
+        return stateObj.attributes.config;
+      },
+      computeCellClass: function (hass, entity) {
+        var domain = entity.entity.split(".")[0];
+        if (domain == "script") return "";
+        return (hass.states[entity.entity].state == "on") ? "on" : "off";
+      },
+      computeCellStyle: function (entity) {
+        var c = entity.column ? entity.column : "auto";
+        var cs = entity.column_span ? entity.column_span : 1;
+        var r = entity.row ? entity.row : "auto";
+        var rs = entity.row_span ? entity.row_span : 1;
+        var bg = entity.picture ? ";background: url(" + entity.picture + ") no-repeat" : "";
+        
+        return "grid-column: " + c + " / span " + cs + "; grid-row: " + r + " / span " + rs + bg;
+      },
+      callService: function (e) {
+        var entity = e.model.item.entity;
+        var domain = e.model.item.entity.split(".")[0];
+        if (domain == "script") {
+          var service = entity.split(".")[1];
+          var data = e.model.item.data ? (e.model.item.data) : {};
+        } else {
+          var service = "toggle";
+          var data = {
+            "entity_id": entity,
+          };
+        }       
+        this.hass.callService(domain, service, data);
+      },
+    });
+  </script>

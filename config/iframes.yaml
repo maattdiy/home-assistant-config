@@ -1,0 +1,29 @@
+  panel_plex:
+    title: 'Plex'
+    url: !secret plex_url
+    icon: mdi:movie
+
+  panel_kodi:
+    title: 'Kodi'
+    url: !secret kodi_url
+    icon: mdi:mdi:kodi
+    
+  panel_sonarr:
+    title: 'Sonarr'
+    url: !secret sonarr_url
+    icon: mdi:radar
+
+  panel_torrent:
+    title: 'Torrent'
+    url: !secret torrent_url
+    icon: mdi:download
+
+  #panel_tvguide:
+  #  title: 'TV Guide'
+  #  url: !secret tvguide_url
+  #  icon: mdi:reorder-horizontal
+  
+  panel_router:
+    title: 'Router'
+    url: !secret router_url
+    icon: mdi:router-wireless

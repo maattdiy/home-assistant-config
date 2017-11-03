@@ -1,0 +1,14 @@
+  #- platform: plex
+  #  include_non_clients: true
+  #  scan_interval: 10
+
+  - platform: clementine
+    host: 192.168.0.100
+  
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+
+  # https://home-assistant.io/components/media_player.kodi/
+  #- platform: kodi
+  #  host: 192.168.0.100

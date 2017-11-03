@@ -1,0 +1,116 @@
+## https://home-assistant.io/components/weblink/
+
+##################################################
+## Mine
+##################################################
+
+entities:
+
+- name: Plex
+  url: !secret plex_url
+  icon: mdi:movie
+
+- name: Kodi
+  url: !secret kodi_url
+  icon: mdi:mdi:kodi
+  
+- name: Sonarr
+  url: !secret sonarr_url
+  icon: mdi:radar
+
+- name: Torrent
+  url: !secret torrent_url
+  icon: mdi:download
+
+- name: Router
+  url: !secret router_url
+  icon: mdi:router-wireless
+  
+##################################################
+## Integrations
+##################################################
+  
+- name: Pushbullet
+  url: https://www.pushbullet.com/
+  icon: mdi:message-bulleted
+
+- name: Telegram
+  url: https://core.telegram.org/bots
+  icon: mdi:mdi:message-alert
+  
+- name: IFFT
+  url: https://ifttt.com/
+  icon: mdi:chart-bubble
+
+- name: EventGhost
+  url: http://www.eventghost.net/docs/
+  icon: mdi:ghost
+
+- name: TVGuide
+  url: !secret tvguide_url
+  icon: mdi:reorder-horizontal
+
+##################################################
+## Other
+##################################################
+
+- name: Components
+  url: https://home-assistant.io/components/
+  icon: mdi:hexagon-outline
+  
+- name: Releases
+  url: https://github.com/home-assistant/home-assistant/releases
+  icon: mdi:package-variant-closed
+  
+  # https://github.com/james-fry/home-assistant-mdi
+- name: Icons
+  url: https://cdn.rawgit.com/james-fry/home-assistant-mdi/efd95d7a/home-assistant-mdi.html
+  icon: mdi:view-module
+  
+- name: Icons2
+  url: https://materialdesignicons.com/
+  icon: mdi:view-module
+  
+- name: Cookbook
+  url: https://home-assistant.io/cookbook/
+  icon: mdi:auto-fix
+
+- name: Podcast
+  url: https://hasspodcast.io/
+  icon: mdi:radio
+
+- name: Blog
+  url: https://home-assistant.io/blog/categories/how-to/
+  icon: mdi:auto-fix
+
+- name: HomeAssistantConfig
+  url: https://github.com/search?q=topic%3Ahome-assistant-config&type=Repositories
+  icon: mdi:github-circle
+
+- name: CustomUI
+  url: https://github.com/andrey-git/home-assistant-custom-ui
+  icon: mdi:window-maximize
+  
+- name: BRUH
+  url: https://www.youtube.com/channel/UCLecVrux63S6aYiErxdiy4w/videos
+  icon: mdi:auto-fix
+
+- name: CCOSTAN
+  url: https://github.com/CCOSTAN/Home-AssistantConfig
+  icon: mdi:auto-fix
+  
+- name: HackerHouse
+  url: https://www.youtube.com/channel/UCEcNXmr7DYq1XxpWHSxaN0w/videos
+  icon: mdi:screwdriver
+
+- name: NaturalNerd
+  url: https://www.youtube.com/channel/UCggHsHce2n3vvbJf_8YKrMA/videos
+  icon: mdi:screwdriver
+
+- name: Hackster
+  url: https://www.hackster.io/home-assistant/projects?sort=published&sort=trending
+  icon: mdi:screwdriver
+    
+- name: Adafruit
+  url: https://learn.adafruit.com/
+  icon: mdi:flower

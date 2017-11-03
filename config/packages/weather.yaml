@@ -1,0 +1,51 @@
+## System HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:  
+    sensor.dark_sky_temperature:  
+      friendly_name: 'Temp'  
+    sensor.dark_sky_summary:
+      friendly_name: 'Weather'
+    sensor.dark_sky_hourly_summary:
+      friendly_name: 'Weather next'
+      #custom_ui_state_card: value_only
+    sensor.dark_sky_daily_summary:
+      friendly_name: 'Weather week'
+      #custom_ui_state_card: value_only
+
+
+##################################################
+## Sensors
+##################################################
+
+## https://home-assistant.io/components/sensor.darksky/
+sensor:
+  - platform: darksky
+    api_key: ea665bf19441ff762a1e4019d3058e58
+    monitored_conditions:
+      - icon
+      - temperature
+      - apparent_temperature
+      - summary
+      - daily_summary
+      - hourly_summary
+
+## https://home-assistant.io/components/sensor.moon/
+  - platform: moon
+
+  - platform: template
+    sensors:
+      dark_sky_template:
+        value_template: "{{ states('sensor.dark_sky_summary') }}"
+        #icon_template: https://community.home-assistant.io/t/map-device-state-to-an-icon/4085/6
+
+  - platform: template
+    sensors:
+      sun_template:
+        friendly_name: 'Sun'
+        value_template: "{{ as_timestamp(states.sun.sun.attributes.next_rising) |  timestamp_custom('%H:%M', True) }} • {{ as_timestamp(states.sun.sun.attributes.next_setting) |  timestamp_custom('%H:%M', True) }}"
+        icon_template: "{% if is_state('sun.sun', 'above_horizon') %}mdi:weather-sunny{% else %}mdi:weather-night{% endif %}"

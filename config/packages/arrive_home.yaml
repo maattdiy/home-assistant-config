@@ -1,0 +1,52 @@
+## Arrive Home HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    script.arrive_home:
+      icon: mdi:home
+      show_last_changed: true
+
+
+##################################################
+## Automations
+##################################################
+
+automation:
+  - alias: Arrive Home
+    trigger:
+      - platform: state
+        entity_id: device_tracker.phone01_phone01
+        to: 'home'
+    condition:
+      - condition: time
+        after: '14:00:00'
+        before: '23:00:00'
+    action:
+      - service: script.arrive_home
+##################################################
+
+  - alias: Arrive Home General
+    trigger:
+      - platform: state
+        entity_id: device_tracker.phone01_phone01
+        to: 'home'
+    action:
+      - service: python_script.summary
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  arrive_home:
+    alias: Arrive Home
+    sequence:            
+      - service: switch.turn_on
+        entity_id: switch.pc_me_monitor
+      #- service: switch.turn_on
+      #  entity_id: switch.ac
+      #- service: script.mp_radio

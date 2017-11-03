@@ -1,0 +1,35 @@
+## Media HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    sensor.tv_schedule_dw:
+      friendly_name: 'TV Dw'
+      icon: mdi:airplay
+      #custom_ui_state_card: value_only
+
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: sonarr
+    api_key: !secret sonarr_key
+    host: !secret sonarr_ip
+    port: !secret sonarr_port
+    monitored_conditions:
+      - upcoming
+    days: 2
+    
+  - platform: template
+    sensors: 
+      tv_schedule_dw:
+        value_template: >-
+          {%- for attr in states.sensor.sonarr_upcoming.attributes -%}
+          {%- if not attr=="friendly_name" and not attr=="icon" and not attr=="unit_of_measurement" -%}
+          {{attr}}
+          {%- endif -%}
+          {%- endfor -%}

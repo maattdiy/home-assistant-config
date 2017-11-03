@@ -1,0 +1,23 @@
+## Alarm HASS Module
+## https://home-assistant.io/components/alarm_control_panel.manual/
+
+##################################################
+## Configuration
+##################################################
+
+alarm_control_panel:
+  - platform: manual    
+    
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    alarm_control_panel.ha_alarm:
+      friendly_name: Alarm
+
+##################################################
+## Automations
+##################################################
+

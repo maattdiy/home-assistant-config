@@ -1,0 +1,27 @@
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    script.all_off:
+      icon: mdi:close-box-outline
+      show_last_changed: false
+
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  all_off:
+    alias: All Off
+    sequence:
+      - service: script.mp_stop
+      - service: switch.turn_off
+        entity_id: switch.pc_me_monitor
+      - service: switch.turn_off
+        entity_id: switch.tv
+      - service: switch.turn_off
+        entity_id: switch.ac

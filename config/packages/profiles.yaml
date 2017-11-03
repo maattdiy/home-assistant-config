@@ -1,0 +1,78 @@
+## Profiles HASS Module
+
+##################################################
+## Customizes
+##################################################
+
+homeassistant:
+  customize:
+    input_number.onsleep_delay:
+      extra_badge:
+        entity_id: input_number.onsleep_delay
+        unit: min
+        blacklist_states: 0
+
+
+##################################################
+## Inputs
+##################################################
+
+input_select:
+  ha_mode:
+    name: Mode
+    icon: mdi:account-settings
+    options:
+     - Normal
+     - Visitors
+     - Show off
+     - Developer
+    initial: Normal
+
+input_boolean:
+  onarrive_presence:
+    name: Presence detection
+    icon: mdi:account-check
+    initial: on
+  onarrive_ac:
+    name: Turn on AC
+    icon: mdi:fan
+    initial: on
+  
+  onsleep_music:
+    name: Music
+    icon: mdi:music
+    initial: on
+
+input_number:
+  onsleep_delay:
+    name: Delay
+    icon: mdi:timer-sand
+    initial: 50
+    min: 0
+    max: 55
+    step: 5
+
+    
+##################################################
+## Groups
+##################################################
+
+group:
+  profile_onarrive:
+    name: On Arrive Home
+    entities:
+      - input_boolean.onarrive_presence
+      - input_boolean.onarrive_ac
+      
+  profile_onsleep:
+    name: On Sleep
+    entities:
+      - input_boolean.onsleep_music
+      - input_number.onsleep_delay
+
+
+##################################################
+## Scripts
+##################################################
+
+#script:
