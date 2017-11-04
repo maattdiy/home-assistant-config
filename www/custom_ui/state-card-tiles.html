@@ -1,0 +1,107 @@
+<dom-module id="state-card-tiles">
+  <template>
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(var(--tiles-columns), var(--tiles-column-width));
+        grid-auto-rows: var(--tiles-row-height);
+        grid-gap: var(--tiles-gap);
+        width: 100%;
+      }
+      paper-button {          
+        box-shadow: none !important;
+        margin: 0 !important;
+        background-color: var(--tiles-color);
+        color: #fff;
+      }        
+      paper-button.on {
+        background-color: var(--tiles-color-on);
+      }
+      paper-button.off {
+        background-color: var(--tiles-color-off);
+      }
+    </style>
+    <paper-button-group class="grid" on-tap="stopPropagation">
+      <template is="dom-repeat" items="[[config.entities]]" as="entity">
+        <paper-button raised class$="[[computeTileClass(hass, entity)]]" style$="[[computeTileStyle(entity)]]"
+        on-tap="callService" >
+          <template is="dom-if" if="[[entity.icon]]">
+            <iron-icon icon="[[entity.icon]]"></iron-icon>
+          </template>
+          [[entity.label]]
+        </paper-button>
+      </template>
+    </paper-button-group>
+  </template>
+</dom-module>
+<script>
+  const VERSION = '2017113';
+  var timeout = 0;
+
+  Polymer({
+    is: 'state-card-tiles',
+    properties: {
+      hass: {
+        type: Object,
+      },
+      stateObj: {
+        type: Object,
+      },
+      config: {
+        type: Object,
+        computed: 'computeConfig(stateObj)',
+      },
+    },
+
+    computeConfig: function (stateObj) {     
+      return stateObj.attributes.config;
+    },
+
+    ready: function () {
+      var config = this.config;
+      this.updateStyles({
+        '--tiles-columns': config.columns ? config.columns : '3',
+        '--tiles-column-width': config.column_width ? config.column_width : '100px',
+        '--tiles-row-height': config.row_height ? config.row_height : '100px',
+        '--tiles-gap': config.gap ? config.gap : '4px',
+        '--tiles-color': config.color ? config.color : 'var(--primary-color)',
+        '--tiles-color-on': config.color_on ? config.color_on : 'var(--google-green-500)',
+        '--tiles-color-off': config.color_off ? config.color_off : 'var(--google-red-500)',
+      });
+    },
+
+    computeTileClass: function (hass, entity) {
+      var domain = entity.entity.split('.')[0];
+      if (domain === 'script') return '';
+      return (hass.states[entity.entity].state === 'on') ? 'on' : 'off';
+    },
+
+    computeTileStyle: function (entity) {
+      var c = entity.column ? entity.column : 'auto';
+      var cs = entity.column_span ? entity.column_span : 1;
+      var r = entity.row ? entity.row : 'auto';
+      var rs = entity.row_span ? entity.row_span : 1;
+      var img = entity.image ? ' background-image: url("' + entity.image + '");' : '';
+      var color = entity.color ? ' background-color: ' + entity.color + ';' : '';
+      
+      return 'grid-column: ' + c + ' / span ' + cs + '; grid-row: ' + r + ' / span ' + rs + ';' + img + color;
+    },
+
+    callService: function (e) {
+      var entity = e.model.entity.entity;
+      var domain = entity.split('.')[0];
+      if (domain === 'script') {
+        var service = entity.split('.')[1];
+        var data = e.model.entity.data ? (e.model.entity.data) : {};
+      } else {
+        var service = 'toggle';
+        var data = { 'entity_id': entity };
+      }       
+      this.hass.callService(domain, service, data);
+    },
+
+    stopPropagation: function (e) {
+      e.stopPropagation();
+    },
+  });
+</script>

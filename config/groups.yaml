@@ -9,7 +9,7 @@ default_view:
   icon: mdi:apps
   entities:
     - group.remote_control
-    - group.remote_control_vibes
+    - group.remote_control_moods
     - group.summary
 
 home:

@@ -1,19 +1,28 @@
-## Buttons Module
-## https://community.home-assistant.io/t/custom-ui-button-panel/29513
-## https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+## Control Panel Module
+
+## About state-card-tiles
+## Original forum thread: https://community.home-assistant.io/t/custom-ui-button-panel/29513
+## Official repo: https://github.com/c727/home-assistant-tiles
+
+## Useful links
+## Easy way to generate image for a tile: https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+## Color blend: https://meyerweb.com/eric/tools/color-blend/
 
 ##################################################
-## Customizes
+## Customize
 ##################################################
 
 homeassistant:
   customize:
     script.remote_control:
-      custom_ui_state_card: state-card-button-panel
+      custom_ui_state_card: state-card-tiles
       config:
         columns: 7
-        cell_height: 75px
-        cell_width: 73px
+        row_height: 75px
+        column_width: 73px
+        gap: 4px
+        color_on: '#36454f'
+        color_off: '#868f95'
         entities:
           # Line 1 - TV
           - entity: switch.tv
@@ -50,10 +59,12 @@ homeassistant:
             row: 2
           - entity: script.ac_hot
             icon: mdi:white-balance-sunny
+            color: '#CD5E14'
             column: 2
             row: 2
           - entity: script.ac_cold
-            icon: mdi:weather-windy
+            icon: mdi:mdi:snowflake
+            color: '#2869A7'
             column: 3
             row: 2
             
@@ -68,34 +79,37 @@ homeassistant:
             row: 3
           - entity: script.all_off
             icon: mdi:close-box-outline
+            color: '#812328'
             column: 3
             row: 3
     
-    script.remote_control_vibes:
-      custom_ui_state_card: state-card-button-panel
+    script.remote_control_moods:
+      custom_ui_state_card: state-card-tiles
       config:
         columns: 5
-        cell_height: 88px
-        cell_width: 88px
+        gap: 0px
+        row_height: 88px
+        column_width: 88px
+        color: '#FFFFFF'
         entities:
           - entity: script.mp_radio
-            picture: /local/icons/kpop.png
+            image: /local/icons/kpop.png
             column: 1
             row: 1
           - entity: script.mp_podcast          
-            picture: /local/icons/podcast.png
+            image: /local/icons/podcast.png
             column: 2
             row: 1
           - entity: script.mp_barney
-            picture: /local/icons/barney.png
+            image: /local/icons/barney.png
             column: 3
             row: 1
           - entity: script.mp_relax01
-            picture: /local/icons/rain.png
+            image: /local/icons/rain.png
             column: 4
             row: 1
           - entity: script.mp_nature
-            picture: /local/icons/nature.png
+            image: /local/icons/nature.png
             column: 5
             row: 1
             
@@ -108,12 +122,13 @@ group:
   remote_control:
     name: Control Panel
     entities:
-      - script.remote_control
+      - script.remote_control      
 
-  remote_control_vibes:
-    name: Vibes
+  remote_control_moods:
+    name: Moods
     entities:
-      - script.remote_control_vibes
+      - script.remote_control_moods
+      - input_number.mp_volume
 
 
 ##################################################
@@ -124,5 +139,5 @@ script:
   remote_control:
     sequence:
   
-  remote_control_vibes:
+  remote_control_moods:
     sequence:

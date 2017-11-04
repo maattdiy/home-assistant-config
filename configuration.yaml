@@ -50,7 +50,7 @@ homeassistant:
     sleep: !include config/packages/sleep.yaml
     developer: !include config/packages/developer.yaml
     # UI Enhancements
-    buttons: !include config/packages/buttons.yaml
+    controlpanel: !include config/packages/controlpanel.yaml
     # TODO
     #webcams: !include config/packages/webcams.yaml
     #calendars: !include config/packages/calendars.yaml
