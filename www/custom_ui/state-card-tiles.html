@@ -8,17 +8,17 @@
         grid-gap: var(--tiles-gap);
         width: 100%;
       }
-      paper-button {          
+      paper-button {
         box-shadow: none !important;
         margin: 0 !important;
         background-color: var(--tiles-color);
         color: #fff;
-      }        
+      }
       paper-button.on {
-        background-color: var(--tiles-color-on);
+        color: var(--tiles-color-on);
       }
       paper-button.off {
-        background-color: var(--tiles-color-off);
+        color: var(--tiles-color-off);
       }
     </style>
     <paper-button-group class="grid" on-tap="stopPropagation">
@@ -82,7 +82,7 @@
       var r = entity.row ? entity.row : 'auto';
       var rs = entity.row_span ? entity.row_span : 1;
       var img = entity.image ? ' background-image: url("' + entity.image + '");' : '';
-      var color = entity.color ? ' background-color: ' + entity.color + ';' : '';
+      var color = entity.color ? ' color: ' + entity.color + ';' : '';
       
       return 'grid-column: ' + c + ' / span ' + cs + '; grid-row: ' + r + ' / span ' + rs + ';' + img + color;
     },

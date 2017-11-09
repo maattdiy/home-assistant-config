@@ -1,0 +1,33 @@
+## Update Module
+
+##################################################
+## Automations
+##################################################
+
+automation:
+
+  # Updates
+  - alias: 'Update Available Notifications'
+    hide_entity: True
+    trigger:
+      platform: state
+      entity_id: updater.updater
+    action:
+      service: script.turn_on
+      entity_id: script.notify_update
+
+
+##################################################
+## Scripts
+##################################################
+      
+script:
+  notify_update:
+    sequence:
+      - event: LOGBOOK_ENTRY
+        event_data:
+          name: UPDATE
+          message: "New Home Assistant update availible."
+      - service: notify.push
+        data:
+          message: "There is a new Home Assistant update availible."

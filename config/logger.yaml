@@ -3,4 +3,14 @@
 
   default: warning
   logs:
+    homeassistant.setup: fatal
+    homeassistant.loader: fatal
+    homeassistant.core: fatal
+    homeassistant.components.sensor: fatal
+    homeassistant.components.media_player: fatal
+    homeassistant.helpers.template: fatal
+    homeassistant.helpers.entity: fatal
+    
+    netdisco.ssdp: fatal
+    homeassistant.components.telegram_bot.polling: fatal    
     homeassistant.components.device_tracker.mqtt: warning

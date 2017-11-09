@@ -1,7 +1,7 @@
-## System HASS Module
+## Weather HASS Module
 
 ##################################################
-## Customizes
+## Customize
 ##################################################
 
 homeassistant:
@@ -16,16 +16,41 @@ homeassistant:
     sensor.dark_sky_daily_summary:
       friendly_name: 'Weather week'
       #custom_ui_state_card: value_only
+    sensor.dark_sky_wind_speed:
+      friendly_name: 'Wind speed'
+    sensor.dark_sky_precip_intensity:
+      friendly_name: 'Precip intensity'
 
 
 ##################################################
-## Sensors
+## Groups
 ##################################################
 
-## https://home-assistant.io/components/sensor.darksky/
+group:
+  environment:
+    name: Environment
+    entities:
+      - sensor.sun_template
+      - sensor.moon
+      - sensor.dark_sky_temperature
+      - sensor.dark_sky_wind_speed
+      - sensor.dark_sky_precip_intensity
+      - sensor.dark_sky_summary
+      - sensor.dark_sky_hourly_summary
+      - sensor.dark_sky_daily_summary
+
+
+##################################################
+## Components/Sensors
+##################################################
+
+## https://home-assistant.io/components/sun/
+sun:
+
 sensor:
+  ## https://home-assistant.io/components/sensor.darksky/
   - platform: darksky
-    api_key: ea665bf19441ff762a1e4019d3058e58
+    api_key: !secret darksky_key
     monitored_conditions:
       - icon
       - temperature
@@ -33,10 +58,14 @@ sensor:
       - summary
       - daily_summary
       - hourly_summary
-
-## https://home-assistant.io/components/sensor.moon/
+      - wind_speed
+      - precip_intensity
+      - precip_probability
+      - cloud_cover
+      
+  ## https://home-assistant.io/components/sensor.moon/
   - platform: moon
-
+  
   - platform: template
     sensors:
       dark_sky_template:

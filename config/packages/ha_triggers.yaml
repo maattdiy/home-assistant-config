@@ -1,0 +1,37 @@
+## Triggers Module
+
+##################################################
+## Automations
+##################################################
+
+automation:
+
+  # Startup
+  - alias: 'Startup'
+    hide_entity: True
+    initial_state: 'on'    
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: frontend.set_theme
+        data:
+          name: darkblue
+      - service: python_script.summary
+      - service: python_script.activity
+
+  # Call Service Event
+  - alias: 'Call Service Event'
+    hide_entity: True
+    initial_state: 'on'
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: script
+    action:
+      - delay: 00:00:02      
+      - service: python_script.summary
+      - service: python_script.last_cmd
+        data_template: 
+          event: "{{ trigger.event }}"

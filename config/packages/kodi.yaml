@@ -1,0 +1,51 @@
+## Kodi Module
+    
+##################################################
+## Automations
+##################################################
+
+media_player:
+  # https://home-assistant.io/components/media_player.kodi/
+  - platform: kodi
+    host: !secret kodi_ip
+
+
+##################################################
+## Automations
+##################################################
+
+automation:
+- alias: "Kodi Living playing"
+  trigger:
+    - platform: state
+      entity_id: media_player.kodi
+      to: 'playing'
+  #condition:
+  #  - condition: state
+  #    entity_id: switch.tv
+  #    state: 'off'
+  action:
+    - service: script.kodi_tv_on
+
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  kodi_tv_on:
+    alias: Kodi turn on TV
+    sequence:
+    - service: switch.turn_on
+      entity_id: switch.tv
+    - delay: 00:00:05
+    - service: script.tv_h1
+    
+  kodi_update_library:
+    alias: Update Kodi Library
+    sequence:
+      - alias: Call Kodi update
+        service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: VideoLibrary.Scan

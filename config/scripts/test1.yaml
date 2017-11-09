@@ -10,3 +10,6 @@ test1:
             - 'TV:/tv, Ar:/ac'
             - 'Nada:/null'
             #- 'Task 1:/command1, Task 1:/command1'
+    - service: script.exec
+      data:
+        name: 'Teste'

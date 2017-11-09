@@ -15,7 +15,10 @@ homeassistant:
     sensor.speedtest_upload:
       icon: mdi:arrow-up
       friendly_name: 'Upload'
+    sensor.external_ip:
+      show_last_changed: true
 
+      
 ##################################################
 ## Sensors
 ##################################################

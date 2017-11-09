@@ -1,0 +1,44 @@
+## Activity Module
+
+##################################################
+## Inputs
+##################################################
+
+input_select:
+  activity:
+    name: Activity
+    icon: mdi:face
+    options:
+     - Unknown
+     - Tv
+     - Pc
+     - Cooking
+     - Sleeping
+    initial: Unknown
+
+##################################################
+## Groups
+##################################################
+
+group:
+  activity:
+    name: Main activity
+    entities:
+      - input_select.activity
+      - sensor.activity_badge
+
+##################################################
+## Automations
+##################################################
+
+automation:
+  - alias: 'Activity change'
+    hide_entity: True
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: input_select.activity
+    action:
+      - service: python_script.activity
+        data_template:  
+          event: "{{ trigger.event }}"

@@ -8,6 +8,10 @@ default_view:
   view: yes
   icon: mdi:apps
   entities:
+    - sensor.activity_badge
+    - sensor.people_badge
+    - sensor.inuse_badge
+    - sensor.profile_badge
     - group.remote_control
     - group.remote_control_moods
     - group.summary
@@ -25,7 +29,7 @@ home:
     - sensor.dark_sky_hourly_summary
     #- sensor.dark_sky_daily_summary
     - alarm_control_panel.ha_alarm
-    #- sensor.countdown1_days
+    - sensor.countdown1_days
     #- group.summary
     #- group.scenes
     - group.living
@@ -48,7 +52,7 @@ info:
   name: Info
   icon: mdi:information
   entities:
-    - group.env
+    - group.environment
     - group.internet
     - group.quote
     - group.about
@@ -60,10 +64,11 @@ general:
   icon: mdi:adjust
   entities:
     - group.alarmclock_wd
-    - group.alarmclock_we    
+    - group.alarmclock_we
     - group.profile_onarrive
     - group.profile_onsleep
-    
+    - group.activity
+
 devices:
   view: yes
   name: Info
@@ -182,16 +187,6 @@ system:
     - sensor.time_template
     - sensor.since_last_boot_template
     - sensor.version
-
-env:
-  name: Environment
-  entities:
-    - sensor.sun_template
-    - sensor.moon
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_summary
-    - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_daily_summary
 
 devices_status:
   name: Devices Status

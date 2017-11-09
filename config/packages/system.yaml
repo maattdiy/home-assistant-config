@@ -1,7 +1,7 @@
-## System HASS Module
+## System Module
 
 ##################################################
-## Customizes
+## Customize
 ##################################################
 
 homeassistant:
@@ -47,43 +47,3 @@ sensor:
 
   - platform: version
     name: version
-
-
-##################################################
-## Automations
-##################################################
-
-automation:
-  # Updates
-  - alias: 'Update Available Notifications'
-    hide_entity: True
-    trigger:
-      platform: state
-      entity_id: updater.updater
-    action:
-      service: script.turn_on
-      entity_id: script.notify_update
-
-  # Startup
-  - alias: 'Startup'
-    hide_entity: True
-    initial_state: 'on'    
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      - service: frontend.set_theme
-        data:
-          name: custom
-      - service: python_script.summary
-
-  # Call Service Event
-  - alias: 'Call Service Event'
-    hide_entity: True
-    trigger:
-      - platform: event
-        event_type: call_service
-        event_data:
-          service: script.turn_on
-    action:    
-      - service: python_script.summary

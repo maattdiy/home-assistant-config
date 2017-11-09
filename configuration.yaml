@@ -14,46 +14,14 @@ homeassistant:
   longitude: !secret home_long
   elevation: 8
   unit_system: metric
+  
   # http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: America/Sao_Paulo
   customize: !include config/customize.yaml
   customize_glob: !include config/customize_glob.yaml
   
   # https://home-assistant.io/docs/configuration/packages/
-  packages:
-    # Devices
-    devices_tvs: !include config/packages/devices_tvs.yaml
-    devices_acs: !include config/packages/devices_acs.yaml
-    devices_tracker: !include config/packages/devices_tracker.yaml
-    devices_status: !include config/packages/devices_status.yaml
-    devices_control_phones: !include config/packages/devices_control_phones.yaml
-    devices_control_pcs: !include config/packages/devices_control_pcs.yaml
-    # General
-    alarm: !include config/packages/alarm.yaml
-    alarmclock: !include config/packages/alarmclock.yaml
-    stats: !include config/packages/stats.yaml
-    bots: !include config/packages/bots.yaml    
-    media_center: !include config/packages/media_center.yaml
-    mp_general: !include config/packages/mp_general.yaml
-    profiles: !include config/packages/profiles.yaml
-    internet: !include config/packages/internet.yaml
-    system: !include config/packages/system.yaml
-    weather: !include config/packages/weather.yaml    
-    date: !include config/packages/date.yaml
-    notify: !include config/packages/notify.yaml
-    broadlink: !include config/packages/broadlink.yaml
-    # Scenes/Scripts
-    arrive_home: !include config/packages/arrive_home.yaml
-    wakeup: !include config/packages/wakeup.yaml
-    all_onoff: !include config/packages/all_onoff.yaml
-    quotes: !include config/packages/quotes.yaml
-    sleep: !include config/packages/sleep.yaml
-    developer: !include config/packages/developer.yaml
-    # UI Enhancements
-    controlpanel: !include config/packages/controlpanel.yaml
-    # TODO
-    #webcams: !include config/packages/webcams.yaml
-    #calendars: !include config/packages/calendars.yaml
+  packages: !include_dir_named config/packages/
 
 
 ##################################################
@@ -83,7 +51,6 @@ updater:
 discovery:
 conversation:
 shopping_list:
-sun:
 #map:
 
 recorder: !include config/recorder.yaml

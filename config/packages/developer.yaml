@@ -21,5 +21,7 @@ script:
   refresh:
     alias: Refresh
     sequence:
+      - service: homeassistant.reload_core_config
+      - service: frontend.reload_themes
       - service: python_script.reload
       - service: python_script.summary

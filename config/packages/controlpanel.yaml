@@ -19,10 +19,12 @@ homeassistant:
       config:
         columns: 7
         row_height: 75px
-        column_width: 73px
-        gap: 4px
-        color_on: '#36454f'
-        color_off: '#868f95'
+        column_width: 62px
+        gap: 15px
+        color: '#262B38'
+        color_on: 'var(--primary-color)'
+        #color_on: '#262B38'
+        color_off: '#616161'
         entities:
           # Line 1 - TV
           - entity: switch.tv
@@ -38,16 +40,16 @@ homeassistant:
             icon: mdi:radio-tower
             column: 3
             row: 1
-          - entity: switch.tv_mute
-            icon: mdi:volume-off
-            column: 4
-            row: 1          
           - entity: script.tv_voldown
             icon: mdi:mdi:volume-medium
-            column: 5
+            column: 4
             row: 1            
           - entity: script.tv_volup
             icon: mdi:mdi:volume-high
+            column: 5
+            row: 1
+          - entity: switch.tv_mute
+            icon: mdi:volume-off
             column: 6
             row: 1
             
@@ -59,27 +61,28 @@ homeassistant:
             row: 2
           - entity: script.ac_hot
             icon: mdi:white-balance-sunny
-            color: '#CD5E14'
+            color: '#D55C0E'
             column: 2
             row: 2
           - entity: script.ac_cold
             icon: mdi:mdi:snowflake
-            color: '#2869A7'
+            color: '#4FA7FF'
             column: 3
             row: 2
             
           # Others
           - entity: script.mp_playpause
             icon: mdi:play-pause
+            color: '#007009'
             column: 1
             row: 3
           - entity: script.sleep
-            icon: mdi:sleep
+            icon: mdi:hotel
             column: 2
             row: 3
           - entity: script.all_off
-            icon: mdi:close-box-outline
-            color: '#812328'
+            icon: mdi:format-vertical-align-bottom
+            color: '#FF4F52'
             column: 3
             row: 3
     
@@ -90,7 +93,7 @@ homeassistant:
         gap: 0px
         row_height: 88px
         column_width: 88px
-        color: '#FFFFFF'
+        color: 'var(--paper-card-background-color)'
         entities:
           - entity: script.mp_radio
             image: /local/icons/kpop.png
@@ -123,7 +126,8 @@ group:
     name: Control Panel
     entities:
       - script.remote_control      
-
+      - sensor.last_command
+      
   remote_control_moods:
     name: Moods
     entities:

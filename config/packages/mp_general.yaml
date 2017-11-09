@@ -118,8 +118,9 @@ script:
   mp_radio:
     alias: Radio
     sequence:
-      - service: script.mp_set
+      - service: script.exec
         data_template:
+          name: mp_set
           source: "Radio"
           volume_level: 0.4
 

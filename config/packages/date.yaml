@@ -1,16 +1,11 @@
 ## Date HASS Module
 
 ##################################################
-## Customizes
+## Components/Sensors
 ##################################################
-
-##################################################
-## Sensors
-##################################################
-  
-## https://community.home-assistant.io/t/custom-countdown-component/19029
 
 sensor:
+  ## https://community.home-assistant.io/t/custom-countdown-component/19029
   - platform: date_countdown
     name: Countdown1
     date: "29-11-2019 19:00"
@@ -18,7 +13,7 @@ sensor:
   - platform: template
     sensors:
       countdown1_days:
-        friendly_name: 'Ap countdown'
+        friendly_name: 'New Ap countdown'
         value_template: '{{ states.sensor.Countdown1.attributes.days }}'
         unit_of_measurement: 'days'
 
