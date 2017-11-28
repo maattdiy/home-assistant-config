@@ -54,7 +54,7 @@ Polymer({
   },
   
   computeStateDisplay: function (stateObj) {
-    return window.hassUtil.computeStateState(stateObj).split("\n");
+    return stateObj.state.split("\n");
   },
   
   computeItem: function (item) {

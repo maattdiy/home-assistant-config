@@ -14,6 +14,8 @@
 
 homeassistant:
   customize:
+  
+    # Control Panel
     script.remote_control:
       custom_ui_state_card: state-card-tiles
       config:
@@ -21,10 +23,11 @@ homeassistant:
         row_height: 75px
         column_width: 62px
         gap: 15px
-        color: '#262B38'
-        color_on: 'var(--primary-color)'
+        color: '#555B65'
+        color_on: '#D5D619'
+        #color_on: 'var(--primary-color)'
         #color_on: '#262B38'
-        color_off: '#616161'
+        color_off: '#BBBEC2'
         entities:
           # Line 1 - TV
           - entity: switch.tv
@@ -61,7 +64,7 @@ homeassistant:
             row: 2
           - entity: script.ac_hot
             icon: mdi:white-balance-sunny
-            color: '#D55C0E'
+            color: '#FF6633'
             column: 2
             row: 2
           - entity: script.ac_cold
@@ -73,49 +76,110 @@ homeassistant:
           # Others
           - entity: script.mp_playpause
             icon: mdi:play-pause
-            color: '#007009'
             column: 1
-            row: 3
-          - entity: script.sleep
-            icon: mdi:hotel
-            column: 2
             row: 3
           - entity: script.all_off
             icon: mdi:format-vertical-align-bottom
-            color: '#FF4F52'
+            column: 2
+            row: 3
+          - entity: script.sleep
+            label: 25m
+            column: 3
+            row: 3
+          - entity: script.sleep
+            label: 2h
+            column: 4
+            row: 3
+            
+    # Kodi
+    script.remote_control_kodi:
+      custom_ui_state_card: state-card-tiles
+      config:
+        columns: 3
+        row_height: 75px
+        column_width: 62px
+        gap: 15px
+        color: '#555B65'
+        entities:
+          # Line 1
+          - entity: script.kodi_cmd
+            data: { value: Input.Home }
+            icon: mdi:home
+            column: 1
+            row: 1
+          - entity: script.kodi_cmd
+            data: { value: Input.Up }
+            icon: mdi:arrow-up
+            column: 2
+            row: 1
+          - entity: script.kodi_play_something
+            icon: mdi:creation
+            column: 3
+            row: 1
+            
+          # Line 2
+          - entity: script.kodi_cmd
+            data: { value: Input.Left }
+            icon: mdi:arrow-left
+            column: 1
+            row: 2
+          - entity: script.kodi_cmd
+            data: { value: Input.ExecuteAction }
+            icon: mdi:circle-outline
+            column: 2
+            row: 2
+          - entity: script.kodi_cmd
+            data: { value: Input.Right }
+            icon: mdi:arrow-right
+            column: 3
+            row: 2
+            
+         # Line 3
+          - entity: script.kodi_cmd
+            data: { value: Input.Back }
+            icon: mdi:keyboard-return
+            column: 1
+            row: 3
+          - entity: script.kodi_cmd
+            data: { value: Input.Down }
+            icon: mdi:arrow-down
+            column: 2
+            row: 3
+          - entity: script.kodi_playpause
+            icon: mdi:play-pause
             column: 3
             row: 3
     
+    # Moods
     script.remote_control_moods:
       custom_ui_state_card: state-card-tiles
       config:
         columns: 5
-        gap: 0px
-        row_height: 88px
-        column_width: 88px
-        color: 'var(--paper-card-background-color)'
+        row_height: 75px
+        column_width: 62px
+        gap: 15px
+        color: '#555B65'
+        #color: 'var(--paper-card-background-color)'
         entities:
-          - entity: script.mp_radio
-            image: /local/icons/kpop.png
+          - entity: script.kodi_play_something
+            icon: mdi:library-music
             column: 1
-            row: 1
-          - entity: script.mp_podcast          
-            image: /local/icons/podcast.png
+            row: 1          
+          - entity: script.kodi_addon
+            data: { value: plugin.audio.rainymood.com }
+            icon: mdi:weather-lightning-rainy
             column: 2
             row: 1
-          - entity: script.mp_barney
-            image: /local/icons/barney.png
+          - entity: script.kodi_play_playlist
+            data: { value: 1 }
+            label: '80s'
             column: 3
             row: 1
-          - entity: script.mp_relax01
-            image: /local/icons/rain.png
+          - entity: script.mp_nature
+            icon: mdi:tree
             column: 4
             row: 1
-          - entity: script.mp_nature
-            image: /local/icons/nature.png
-            column: 5
-            row: 1
-            
+
 
 ##################################################
 ## Groups
@@ -125,14 +189,19 @@ group:
   remote_control:
     name: Control Panel
     entities:
-      - script.remote_control      
+      - script.remote_control
       - sensor.last_command
+
+  remote_control_kodi:
+    name: Kodi
+    entities:
+      - script.remote_control_kodi
+      - input_number.kodi_volume
       
   remote_control_moods:
     name: Moods
     entities:
       - script.remote_control_moods
-      - input_number.mp_volume
 
 
 ##################################################
@@ -141,6 +210,9 @@ group:
             
 script:
   remote_control:
+    sequence:
+  
+  remote_control_kodi:
     sequence:
   
   remote_control_moods:

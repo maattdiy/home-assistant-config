@@ -5,15 +5,13 @@
 
 
 ##################################################
-## Customizes
+## Customize
 ##################################################
 
 homeassistant:
   customize:
     media_player.clementine_remote:
-      friendly_name: 'Player'
-      entity_picture: ''
-    media_player.clementine:
+      friendly_name: 'Pc'
       entity_picture: ''
     media_player.spotify:
       entity_picture: ''

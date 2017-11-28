@@ -12,5 +12,5 @@ time = "%02d:%02d" % (dt.hour, dt.minute)
 hass.states.set('sensor.activity_badge', state_value, {
     'friendly_name': ' ',
     'entity_picture': '/local/activities/{}.png'.format(state_value.lower()),
-    'unit_of_measurement': time
+    'unit_of_measurement': 'Act'
 })

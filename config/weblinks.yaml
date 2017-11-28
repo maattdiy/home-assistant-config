@@ -6,6 +6,10 @@
 
 entities:
 
+- name: Repo
+  url: https://github.com/maattdiy/home-assistant-config
+  icon: mdi:github-box
+  
 - name: Plex
   url: !secret plex_url
   icon: mdi:movie
@@ -49,6 +53,18 @@ entities:
 - name: TVGuide
   url: !secret tvguide_url
   icon: mdi:reorder-horizontal
+  
+- name: KodiAPI
+  url: http://kodi.wiki/view/JSON-RPC_API/v6
+  icon: mdi:kodi
+
+##################################################
+## Downloads
+##################################################
+
+- name: Torrent1
+  url: !secret utl_torrent1
+  icon: mdi:folder-download
 
 ##################################################
 ## Other

@@ -13,6 +13,7 @@ default_view:
     - sensor.inuse_badge
     - sensor.profile_badge
     - group.remote_control
+    - group.remote_control_kodi
     - group.remote_control_moods
     - group.summary
 
@@ -86,6 +87,7 @@ learn:
     - group.links_res
     - group.links_insp
     - group.links_int
+    - group.links_down
     
 setup:
   view: yes
@@ -108,6 +110,7 @@ setup:
 links_res:
   name: Resources
   entities:
+    - weblink.Repo
     - weblink.Components
     - weblink.Releases
     - weblink.Podcast
@@ -144,6 +147,12 @@ links_int:
     - weblink.Telegram
     - weblink.IFFT
     - weblink.EventGhost
+    - weblink.KodiAPI
+    
+links_down:
+  name: Downloads
+  entities:
+    - weblink.Torrent1
 
 
 ##################################################
@@ -238,6 +247,7 @@ scripts:
   name: Scripts
   entities:
     - script.refresh
+    - script.kodi_update_library
     - script.ir_learn
     - script.arrive_home
     - script.wakeup

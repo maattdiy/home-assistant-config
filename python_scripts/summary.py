@@ -1,3 +1,6 @@
+## https://github.com/maattdiy/home-assistant-config
+
+## Resources:
 ## https://home-assistant.io/components/python_script/
 ## https://home-assistant.io/docs/configuration/state_object/
 
@@ -70,9 +73,9 @@ if (hass.states.get('input_boolean.alarmclock_wd_enabled').state != 'on') and (h
 
 state = hass.states.get('input_select.ha_mode')
 if (state.state != 'Normal'):
-    summary = summary + '\n ' + '* ' + state.state + '  profile is activated'
+    summary = summary + '\n ' + '* ' + state.state + ' profile is activated'
     hass.states.set('sensor.profile_badge', '', {
-        'entity_picture': '/local/profiles/developer.png',
+        'entity_picture':  '/local/profiles/{}.png'.format(state.state.lower()),
         'friendly_name': ' ',
         'unit_of_measurement': 'Mode'
     })
@@ -82,13 +85,13 @@ if (state.state != 'Normal'):
 ##################################################
 
 # People badge update
-hass.states.set('sensor.people_badge', str(home_count), {
+hass.states.set('sensor.people_badge', home_count, {
     'friendly_name': ' ',
     'unit_of_measurement': 'Home',
 })
 
 # In use badge update
-hass.states.set('sensor.inuse_badge', str(inuse_count), {
+hass.states.set('sensor.inuse_badge', inuse_count, {
     'friendly_name': ' ',
     'unit_of_measurement': 'In use'
 })

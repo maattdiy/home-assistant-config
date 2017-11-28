@@ -15,7 +15,7 @@
 *.backup
 *.bkp
 *.session
-www/*.png
+www/people/*.png
 
 customize.yaml
 automations.yaml
