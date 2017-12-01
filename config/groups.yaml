@@ -269,3 +269,13 @@ family:
     - device_tracker.phone01_phone01
     - device_tracker.phone_mother
     - device_tracker.iphonedemario
+
+
+##################################################
+## Devices
+##################################################
+
+devices_alwayson:
+  name: Devices always on
+  entities:
+    - device_tracker.androidtv

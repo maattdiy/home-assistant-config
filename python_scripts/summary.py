@@ -4,31 +4,47 @@
 ## https://home-assistant.io/components/python_script/
 ## https://home-assistant.io/docs/configuration/state_object/
 
-home_count = 0
-home_desc = ""
+group_count = 0
+group_desc = ""
 inuse_count = 0
 inuse_desc = ""
 summary = ""
+idx = 0
 
 ##################################################
-## People count
+## Group count (people and devices)
 ##################################################
 
-# People at home (only by phone)
-for entity_id in hass.states.entity_ids('device_tracker'):
-    if entity_id.find("phone") >= 0:
+# Entities summary by group name
+groups = ['group.family' , 'group.devices_alwayson']
+groups_condition = ['home', 'not_home']
+groups_format = ['{} at home: {}', '!{} offline: {}']
+
+for group in groups:
+    group_count = 0
+    group_desc = ''
+    
+    for entity_id in hass.states.get(group).attributes['entity_id']:
         state = hass.states.get(entity_id)
-        if state.state == 'home':
-            home_count = home_count + 1
-            home_desc = home_desc + state.name + ', '
-            #relative_time(state.last_changed) Is possible show the relative time?
-
-if home_count > 0:
-    home_desc = str(home_count) + ' at home: ' + home_desc[:-2]
-else:
-    home_desc = 'Nobody in home'
-
-summary = home_desc
+        
+        if state.state == groups_condition[idx]:
+            dt = state.last_changed
+            dt = dt + datetime.timedelta(hours=-2) # For time zone :( How to do native?
+            time = '%02d:%02d' % (dt.hour, dt.minute)
+            
+            # If state changed in the past days show the date too
+            if dt.date() < datetime.datetime.now().date():
+                time = '{} {}'.format('%02d/%02d' % (dt.day, dt.month), time)
+            
+            group_count = group_count + 1
+            group_desc = '{} {} ({}), '.format(group_desc, state.name, time)
+    
+    # Final format for this group
+    if group_count > 0:    
+        group_desc = groups_format[idx].format(group_count, group_desc[:-2])
+    
+    summary = '{}{}\n'.format(summary, group_desc)
+    idx = idx + 1
 
 ##################################################
 ## Devices in use count
@@ -85,7 +101,7 @@ if (state.state != 'Normal'):
 ##################################################
 
 # People badge update
-hass.states.set('sensor.people_badge', home_count, {
+hass.states.set('sensor.people_badge', group_count, {
     'friendly_name': ' ',
     'unit_of_measurement': 'Home',
 })
