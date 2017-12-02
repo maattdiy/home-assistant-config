@@ -4,21 +4,27 @@
 ## https://home-assistant.io/components/python_script/
 ## https://home-assistant.io/docs/configuration/state_object/
 
+debug = False
+show_badges = True
+show_card = True
+
 group_count = 0
-group_desc = ""
-inuse_count = 0
-inuse_desc = ""
-summary = ""
+group_desc = ''
+summary = ''
 idx = 0
 
 ##################################################
-## Group count (people and devices)
+## Groups summary (people and devices)
 ##################################################
 
 # Entities summary by group name
-groups = ['group.family' , 'group.devices_alwayson']
-groups_condition = ['home', 'not_home']
-groups_format = ['{} at home: {}', '!{} offline: {}']
+groups = ['group.family', 'group.devices_default', 'group.devices_alwayson']
+groups_format = ['{} at home: {}', '{} in use: {}', '!{} offline: {}']
+groups_filter = ['home', 'on|playing', 'off|not_home']
+groups_badge = ['Home', 'In use', 'Alert']
+groups_badge_pic = ['', '', 'bug']
+groups_desc = ['Nobody in home', '', '']
+groups_count = [0, 0, 0]
 
 for group in groups:
     group_count = 0
@@ -26,8 +32,9 @@ for group in groups:
     
     for entity_id in hass.states.get(group).attributes['entity_id']:
         state = hass.states.get(entity_id)
+        filter = groups_filter[idx]
         
-        if state.state == groups_condition[idx]:
+        if (state.state in filter.split('|') or debug):
             dt = state.last_changed
             dt = dt + datetime.timedelta(hours=-2) # For time zone :( How to do native?
             time = '%02d:%02d' % (dt.hour, dt.minute)
@@ -40,79 +47,91 @@ for group in groups:
             group_desc = '{} {} ({}), '.format(group_desc, state.name, time)
     
     # Final format for this group
-    if group_count > 0:    
-        group_desc = groups_format[idx].format(group_count, group_desc[:-2])
-    
-    summary = '{}{}\n'.format(summary, group_desc)
+    if (group_count > 0):
+        group_desc = groups_format[idx].format(group_count, group_desc[:-2])    
+        groups_desc[idx] = group_desc
+        groups_count[idx] = group_count
+        
     idx = idx + 1
 
 ##################################################
-## Devices in use count
+## Badges updates
 ##################################################
 
-domnains = ['switch', 'media_player']
-for domain in domnains:
-    for entity_id in hass.states.entity_ids(domain):
-        show = False
-        state = hass.states.get(entity_id)
-        
-        # Media players
-        if (state.state == 'playing'):
-            show = True
-            
-        # Switchs with icons
-        if (state.state == 'on'):
-            ## Only switchs with icons are relevants (ignore internal switchs). Find by tag "icon" in dictionary because "state.attributes.icon" didn't work
-            if (str(state.attributes).find("'icon'")) >= 0:
-                show = True
-        
-        if (show):
-            if (inuse_desc.find(state.name + ', ') == -1):
-                #logger.info("state.attributes = " + str(state.attributes))
-                inuse_count = inuse_count + 1
-                inuse_desc = inuse_desc + state.name + ', '
+idx = 0
 
-if inuse_count > 0:
-    inuse_desc = str(inuse_count) + ' in use: ' + inuse_desc[:-2]
-    summary = summary + '\n ' + inuse_desc
+if show_badges:
+    for badge in groups_badge:
+        if (badge != ''):
+            entity_id = 'sensor.{}_badge'.format(badge.replace(' ', '').lower());
+            hidden = False if (groups_count[idx] > 0 or debug) else True
+            fname = groups_desc[idx] if debug else ' '
+            picture = '/local/badges/{}.png'.format(groups_badge_pic[idx]) if (groups_badge_pic[idx] != '') else ''
+            
+            hass.states.set(entity_id, groups_count[idx], {
+              'friendly_name': fname,
+              'unit_of_measurement': badge, 
+              'entity_picture': picture,
+              'hidden': hidden
+            })
+            
+        idx = idx + 1
 
 ##################################################
 ## Alarm clock
 ##################################################
 
-if (hass.states.get('input_boolean.alarmclock_wd_enabled').state != 'on') and (hass.states.get('input_boolean.alarmclock_we_enabled').state != 'on'):
-    summary = summary + '\n ' + '!Alarm clock is disabled'
+alarms_prefix = ['alarmclock_wd', 'alarmclock_we']
+alarms_wfilter = ['1|2|3|4|5', '6|7']
+alarms_desc = ''
+idx = 0
+
+for entity_id in alarms_prefix:
+    state = hass.states.get('input_boolean.{}_enabled'.format(entity_id))
+    if (not state is None):
+        if (state.state == 'on'):
+            # Show the alarm for the next day
+            if (str(datetime.datetime.now().isoweekday()) in alarms_wfilter[idx].split('|')):
+                state = hass.states.get('sensor.{}_time_template'.format(entity_id))
+                alarms_desc = '{}{}, '.format(alarms_desc, state.state)
+    idx = idx + 1
+
+if (alarms_desc == ''):
+    alarms_desc = '!Alarm clock is disabled'
+else:
+    alarms_desc = 'Alarm clock at ' + alarms_desc[:-2]
 
 ##################################################
 ## Profile/mode
 ##################################################
 
+profile_desc = ''
 state = hass.states.get('input_select.ha_mode')
-if (state.state != 'Normal'):
-    summary = summary + '\n ' + '* ' + state.state + ' profile is activated'
+
+if (not state is None):
+    hidden = False if (state.state != 'Normal') else True
+    
     hass.states.set('sensor.profile_badge', '', {
-        'entity_picture':  '/local/profiles/{}.png'.format(state.state.lower()),
-        'friendly_name': ' ',
-        'unit_of_measurement': 'Mode'
+      'entity_picture':  '/local/profiles/{}.png'.format(state.state.lower()),
+      'friendly_name': ' ',
+      'unit_of_measurement': 'Mode',
+      'hidden': hidden
     })
+    
+    if not hidden:
+        profile_desc = '{}*{} profile is activated\n'.format(summary, state.state)
 
 ##################################################
-## Sensors updates
+## Summary update
 ##################################################
 
-# People badge update
-hass.states.set('sensor.people_badge', group_count, {
-    'friendly_name': ' ',
-    'unit_of_measurement': 'Home',
-})
+for group_desc in groups_desc:
+    if (group_desc != ''):
+        summary = '{}{}\n'.format(summary, group_desc)
 
-# In use badge update
-hass.states.set('sensor.inuse_badge', inuse_count, {
-    'friendly_name': ' ',
-    'unit_of_measurement': 'In use'
-})
+summary = '{}\n{}\n{}'.format(summary, alarms_desc, profile_desc)
 
-# Summary sensors update
-hass.states.set('sensor.summary', summary, {
-    'custom_ui_state_card': 'state-card-value_only'
-})
+if show_card:
+    hass.states.set('sensor.summary', summary, {
+      'custom_ui_state_card': 'state-card-value_only'
+    })

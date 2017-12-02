@@ -9,8 +9,9 @@ default_view:
   icon: mdi:apps
   entities:
     - sensor.activity_badge
-    - sensor.people_badge
+    - sensor.home_badge
     - sensor.inuse_badge
+    - sensor.alert_badge
     - sensor.profile_badge
     - group.remote_control
     - group.remote_control_kodi
@@ -276,6 +277,13 @@ family:
 ##################################################
 
 devices_alwayson:
-  name: Devices always on
+  name: Devices (Always On)
   entities:
     - device_tracker.androidtv
+
+devices_default:
+  name: Devices (Default)
+  entities:
+    - switch.ac_template
+    - switch.tv_template
+    - media_player.kodi
