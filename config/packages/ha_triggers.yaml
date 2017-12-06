@@ -35,3 +35,13 @@ automation:
       - service: python_script.last_cmd
         data_template: 
           event: "{{ trigger.event }}"
+
+  # Time interval updates (each 2 seconds)
+  - alias: 'Time interval updates'
+    hide_entity: True
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        seconds: '/2'
+    action:
+      - service: python_script.summary

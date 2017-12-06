@@ -82,7 +82,7 @@
       var r = entity.row ? entity.row : 'auto';
       var rs = entity.row_span ? entity.row_span : 1;
       var img = entity.image ? ' background-image: url("' + entity.image + '");' : '';
-      var color = entity.color ? ' color: ' + entity.color + ';' : '';
+      var color = entity.color ? ' background-color: ' + entity.color + ';' : '';
       
       return 'grid-column: ' + c + ' / span ' + cs + '; grid-row: ' + r + ' / span ' + rs + ';' + img + color;
     },
