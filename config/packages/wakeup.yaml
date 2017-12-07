@@ -19,7 +19,7 @@ script:
   wakeup:
     alias: Wake Up
     sequence:
-      - service: script.mp_wakeup
+      - service: script.kodi_play_something
       - delay:
            minutes: 10
       - service: script.mp_stop

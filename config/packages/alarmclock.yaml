@@ -1,4 +1,4 @@
-# Alarm Clock HASS Module
+# Alarm Clock Module
 # https://github.com/jjmontesl/home-assistant-config/blob/master/config/packages/alarmclock.yaml
 
 
@@ -92,10 +92,10 @@ sensor:
 
 automation:
   - alias: Alarm Clock
-    initial_state: 'off'
+    initial_state: 'on'
     trigger:
       - platform: time
-        minutes: '/5'
+        minutes: '/1'
         seconds: 00
 
     condition:
@@ -120,7 +120,7 @@ automation:
             state: 'on'
           - condition: state
             entity_id: binary_sensor.workday_sensor
-            state: 'off'            
+            state: 'off'
     action:
       - service: script.alarmclock_ring
 

@@ -1,4 +1,6 @@
-## https://github.com/maattdiy/home-assistant-config
+## Repo: https://github.com/maattdiy/home-assistant-config
+## Screenshot: https://github.com/maattdiy/home-assistant-config/blob/master/screenshots/summary.png
+## Script call: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/ha_triggers.yaml#L39
 
 ## Resources:
 ## https://home-assistant.io/components/python_script/
@@ -15,6 +17,7 @@ idx = 0
 
 ##################################################
 ## Groups summary (people and devices)
+## Groups config: https://github.com/maattdiy/home-assistant-config/blob/master/config/groups.yaml#L267
 ##################################################
 
 # Entities summary by group name
@@ -56,6 +59,7 @@ for group in groups:
 
 ##################################################
 ## Badges updates
+## Badges images: https://github.com/maattdiy/home-assistant-config/tree/master/www/badges
 ##################################################
 
 idx = 0
@@ -66,7 +70,7 @@ if show_badges:
             entity_id = 'sensor.{}_badge'.format(badge.replace(' ', '').lower());
             hidden = False if (groups_count[idx] > 0 or debug) else True
             fname = groups_desc[idx] if debug else ' '
-            picture = '/local/badges/{}.png'.format(groups_badge_pic[idx]) if (groups_badge_pic[idx] != '') else ''
+            picture = '/local/badges/{}.png'.format(groups_badge_pic[idx].replace(' ', '').lower()) if (groups_badge_pic[idx] != '') else ''
             
             hass.states.set(entity_id, groups_count[idx], {
               'friendly_name': fname,
@@ -79,6 +83,7 @@ if show_badges:
 
 ##################################################
 ## Alarm clock
+## Package: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/alarmclock.yaml
 ##################################################
 
 alarms_prefix = ['alarmclock_wd', 'alarmclock_we']
@@ -103,6 +108,9 @@ else:
 
 ##################################################
 ## Profile/mode
+## General package: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/profiles.yaml
+## Developer package: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/developer.yaml
+## Badges images: https://github.com/maattdiy/home-assistant-config/tree/master/www/profiles
 ##################################################
 
 profile_desc = ''
@@ -112,7 +120,7 @@ if (not state is None):
     hidden = False if (state.state != 'Normal') else True
     
     hass.states.set('sensor.profile_badge', '', {
-      'entity_picture':  '/local/profiles/{}.png'.format(state.state.lower()),
+      'entity_picture':  '/local/profiles/{}.png'.format(state.state.replace(' ', '').lower()),
       'friendly_name': ' ',
       'unit_of_measurement': 'Mode',
       'hidden': hidden
@@ -123,6 +131,7 @@ if (not state is None):
 
 ##################################################
 ## Summary update
+## Custom card: https://github.com/maattdiy/home-assistant-config/blob/master/www/custom_ui/state-card-value_only.html
 ##################################################
 
 for group_desc in groups_desc:

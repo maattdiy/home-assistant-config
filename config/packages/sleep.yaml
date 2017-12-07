@@ -18,7 +18,7 @@ homeassistant:
 script:
   sleep:
     alias: Sleep
-    sequence:    
+    sequence:
       - service: switch.turn_off
         entity_id: switch.pc_me_monitor
       - service_template: >

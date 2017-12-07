@@ -12,6 +12,19 @@ homeassistant:
     script.ir_learn:
       icon: mdi:remote
       #show_last_changed: true
+      
+          
+##################################################
+## Groups
+##################################################
+
+group:
+  developer:
+    name: Developer
+    entities:
+      - script.mode_normal
+      - script.refresh
+      - script.ir_learn
 
 ##################################################
 ## Scripts

@@ -179,7 +179,10 @@ homeassistant:
             icon: mdi:tree
             column: 4
             row: 1
-
+          - entity: script.mode_developer
+            icon: mdi:code-braces
+            column: 5
+            row: 1
 
 ##################################################
 ## Groups

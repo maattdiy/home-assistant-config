@@ -17,9 +17,10 @@ automation:
       - service: frontend.set_theme
         data:
           name: darkblue
-      - service: python_script.summary
+      - service: script.mode_normal
       - service: python_script.activity
-
+      - service: python_script.summary
+    
   # Call Service Event
   - alias: 'Call Service Event'
     hide_entity: True
@@ -30,18 +31,17 @@ automation:
         event_data:
           domain: script
     action:
-      - delay: 00:00:02      
-      - service: python_script.summary
+      - delay: 00:00:02
       - service: python_script.last_cmd
         data_template: 
           event: "{{ trigger.event }}"
 
-  # Time interval updates (each 2 seconds)
+  # Time interval update (each 3 seconds)
   - alias: 'Time interval updates'
     hide_entity: True
     initial_state: 'on'
     trigger:
       - platform: time
-        seconds: '/2'
+        seconds: '/3'
     action:
       - service: python_script.summary

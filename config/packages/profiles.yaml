@@ -1,4 +1,4 @@
-## Profiles Module
+## Profiles/Modes Module
 
 ##################################################
 ## Customize
@@ -26,7 +26,7 @@ input_select:
      - Visitors
      - Show off
      - Developer
-    initial: Developer
+    initial: Normal
 
 input_boolean:
   onarrive_presence:
@@ -75,4 +75,29 @@ group:
 ## Scripts
 ##################################################
 
-#script:
+script:
+  # Mode Developer
+  mode_developer:
+    alias: Start Developer mode
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.ha_mode
+          option: Developer
+      - service: group.set_visibility
+        entity_id: group.developer
+        data:
+          visible: True
+
+  # Mode Normal. Called in Startup (config/packages/ha_triggers.yaml)
+  mode_normal:
+    alias: Back to Normal mode
+    sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.ha_mode
+          option: Normal
+      - service: group.set_visibility
+        entity_id: group.developer
+        data:
+          visible: False
