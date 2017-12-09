@@ -54,7 +54,10 @@ Polymer({
   },
   
   computeStateDisplay: function (stateObj) {
-    return stateObj.state.split("\n");
+    var text = stateObj.attributes.text;
+    
+    if (text == null) { text = stateObj.state };
+    return text.split("\n");  
   },
   
   computeItem: function (item) {

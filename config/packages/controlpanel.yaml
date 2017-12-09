@@ -14,7 +14,9 @@
 
 homeassistant:
   customize:
-  
+    sensor.kodi_template:
+      custom_ui_state_card: state-card-value_only
+    
     # Control Panel
     script.remote_control:
       custom_ui_state_card: state-card-tiles
@@ -29,67 +31,68 @@ homeassistant:
         #color_on: '#262B38'
         color_off: '#BBBEC2'
         entities:
-          # Line 1 - TV
+          # Favorites
+          - entity: script.automagic
+            icon: mdi:creation
+            column: 1
+            row: 1
+          - entity: script.all_off
+            icon: mdi:format-vertical-align-bottom
+            column: 2
+            row: 1
+          - entity: script.sleep
+            label: 25m
+            column: 3
+            row: 1
+          - entity: script.sleep
+            label: 2h
+            column: 4
+            row: 1
+            
+          # TV
           - entity: switch.tv
             caption: 
             icon: mdi:monitor
             column: 1
-            row: 1
+            row: 2
           - entity: script.tv_h1
             icon: mdi:android
             column: 2
-            row: 1
+            row: 2
           - entity: script.tv_antena
             icon: mdi:radio-tower
             column: 3
-            row: 1
+            row: 2
           - entity: script.tv_voldown
             icon: mdi:mdi:volume-medium
             column: 4
-            row: 1            
+            row: 2            
           - entity: script.tv_volup
             icon: mdi:mdi:volume-high
             column: 5
-            row: 1
+            row: 2
           - entity: switch.tv_mute
             icon: mdi:volume-off
             column: 6
-            row: 1
+            row: 2
             
-          # Line - AC
+          # AC
           - entity: switch.ac
             caption: 
             icon: mdi:fan
             column: 1
-            row: 2
+            row: 3
           - entity: script.ac_hot
             icon: mdi:white-balance-sunny
             color: '#FF6633'
             column: 2
-            row: 2
+            row: 3
           - entity: script.ac_cold
             icon: mdi:mdi:snowflake
             color: '#4FA7FF'
             column: 3
-            row: 2
+            row: 3
             
-          # Others
-          - entity: script.mp_playpause
-            icon: mdi:play-pause
-            column: 1
-            row: 3
-          - entity: script.all_off
-            icon: mdi:format-vertical-align-bottom
-            column: 2
-            row: 3
-          - entity: script.sleep
-            label: 25m
-            column: 3
-            row: 3
-          - entity: script.sleep
-            label: 2h
-            column: 4
-            row: 3
             
     # Kodi
     script.remote_control_kodi:
@@ -112,10 +115,10 @@ homeassistant:
             icon: mdi:arrow-up
             column: 2
             row: 1
-          - entity: script.kodi_play_something
-            icon: mdi:creation
+          - entity: script.kodi_playpause
+            icon: mdi:play-pause
             column: 3
-            row: 1
+            row: 1          
             
           # Line 2
           - entity: script.kodi_cmd
@@ -134,7 +137,7 @@ homeassistant:
             column: 3
             row: 2
             
-         # Line 3
+          # Line 3
           - entity: script.kodi_cmd
             data: { value: Input.Back }
             icon: mdi:keyboard-return
@@ -145,11 +148,11 @@ homeassistant:
             icon: mdi:arrow-down
             column: 2
             row: 3
-          - entity: script.kodi_playpause
-            icon: mdi:play-pause
+          - entity: script.kodi_stop
+            icon: mdi:volume-off
             column: 3
             row: 3
-    
+            
     # Moods
     script.remote_control_moods:
       custom_ui_state_card: state-card-tiles
@@ -160,6 +163,8 @@ homeassistant:
         gap: 15px
         color: '#555B65'
         #color: 'var(--paper-card-background-color)'
+        color_on: '#D5D619'
+        color_off: '#BBBEC2'
         entities:
           - entity: script.kodi_play_something
             icon: mdi:library-music
@@ -179,11 +184,15 @@ homeassistant:
             icon: mdi:tree
             column: 4
             row: 1
-          - entity: script.mode_developer
+          - entity: switch.mode_developer
             icon: mdi:code-braces
             column: 5
             row: 1
-
+          - entity: switch.mode_kodi
+            icon: mdi:kodi
+            column: 6
+            row: 1
+            
 ##################################################
 ## Groups
 ##################################################
@@ -198,6 +207,7 @@ group:
   remote_control_kodi:
     name: Kodi
     entities:
+      - sensor.kodi_template
       - script.remote_control_kodi
       - input_number.kodi_volume
       

@@ -11,7 +11,7 @@ default_view:
     - sensor.activity_badge
     - sensor.home_badge
     - sensor.inuse_badge
-    - sensor.alert_badge
+    - sensor.status_badge
     - sensor.profile_badge
     - group.remote_control
     - group.remote_control_kodi
@@ -70,7 +70,7 @@ general:
     - group.alarmclock_we
     - group.profile_onarrive
     - group.profile_onsleep
-    - group.activity
+    #- group.activity
 
 devices:
   view: yes
@@ -137,7 +137,6 @@ links_insp:
     - weblink.CustomUI
     - weblink.Blog
     - weblink.BRUH
-    - weblink.CCOSTAN
     - weblink.HackerHouse
     - weblink.NaturalNerd
     - weblink.Adafruit
@@ -199,13 +198,6 @@ system:
     - sensor.since_last_boot_template
     - sensor.version
 
-devices_status:
-  name: Devices Status
-  entities:
-    - sensor.broadlink_template
-    - sensor.androidtv_template
-    - sensor.tv_template
-
 scenes:
   name: Scenes
   entities:
@@ -248,7 +240,7 @@ profile:
 scripts:
   name: Scripts
   entities:
-    - script.refresh
+    - script.reload
     - script.kodi_update_library
     - script.ir_learn
     - script.arrive_home
@@ -260,6 +252,7 @@ tests:
   entities:
     - script.test1
     - script.test2
+
 
 ##################################################
 ## People
@@ -277,11 +270,19 @@ family:
 ## Devices
 ##################################################
 
+devices_status:
+  name: Devices Status
+  entities:
+    - sensor.broadlink_template
+    - sensor.androidtv_template
+    - sensor.tv_template
+
 devices_alwayson:
   name: Devices (Always On)
   entities:
-    - device_tracker.androidtv
-
+    - sensor.broadlink_template
+    #- sensor.androidtv_template
+    
 devices_default:
   name: Devices (Default)
   entities:

@@ -1,0 +1,13 @@
+
+##################################################
+## Scripts
+##################################################
+
+script:
+  automagic:
+    alias: Automagic
+    sequence:
+      - service: script.kodi_play_something
+      - service: script.ac_cold
+      - service: switch.turn_on
+        entity_id: switch.pc_me_monitor

@@ -40,5 +40,20 @@ automation:
         entity_id: input_select.activity
     action:
       - service: python_script.activity
-        data_template:  
+        data_template:
+          event: "{{ trigger.event }}"
+    
+  # Trigger
+  - alias: 'Call Script Event'
+    hide_entity: True
+    initial_state: 'on'
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: script
+    action:
+      - delay: 00:00:02
+      - service: python_script.last_cmd
+        data_template: 
           event: "{{ trigger.event }}"

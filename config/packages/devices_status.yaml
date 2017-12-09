@@ -42,7 +42,7 @@ sensor:
         friendly_name: 'TV'
         value_template: "{{ 'on' if is_state('device_tracker.tv', 'home') else 'off' }}"
         icon_template: "{{ 'mdi:monitor' if is_state('device_tracker.tv', 'home') else 'mdi:close-circle' }}"
-        
+
 
 ##################################################
 ## Automations

@@ -45,6 +45,50 @@ input_number:
     max: 1
     step: 0.01
 
+input_boolean:
+  mode_kodi:
+    name: Kodi Mode
+    icon: mdi:Kodi
+    initial: off
+
+##################################################
+## Switchs
+##################################################
+
+switch:
+  - platform: template
+    switches:
+      mode_kodi:
+        value_template: "{{ is_state('input_boolean.mode_kodi', 'on') }}"
+        turn_on:
+          - service: input_boolean.turn_on
+            entity_id: input_boolean.mode_kodi
+          - service: group.set_visibility
+            entity_id: group.remote_control_kodi
+            data:
+              visible: True
+        turn_off:
+          - service: input_boolean.turn_off
+            entity_id: input_boolean.mode_kodi
+          - service: group.set_visibility
+            entity_id: group.remote_control_kodi
+            data:
+              visible: False
+
+
+##################################################
+## Sensors
+##################################################
+
+sensor:
+  - platform: template
+    sensors:
+      kodi_template:
+        friendly_name: 'Kodi'
+        value_template: "It's {{ states.media_player.kodi.attributes.media_content_type }} • {{ states.media_player.kodi.attributes.media_title }}"
+        icon_template: 'mdi:kodi'
+        #icon_template: "{{ 'mdi:kodi' if is_state('media_player.kodi', 'playing') else 'mdi:close-circle' }}"
+
 
 ##################################################
 ## Automations
@@ -141,7 +185,17 @@ script:
           entity_id: media_player.kodi
           method: Player.PlayPause
           playerid: 0
-
+  
+  # Stop
+  kodi_stop:
+    alias: Kodi Play/Pause
+    sequence:
+      - service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Player.Stop
+          playerid: 0
+  
   # Update Library
   kodi_update_library:
     alias: Update Kodi Library

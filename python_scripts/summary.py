@@ -1,6 +1,6 @@
 ## Repo: https://github.com/maattdiy/home-assistant-config
 ## Screenshot: https://github.com/maattdiy/home-assistant-config/blob/master/screenshots/summary.png
-## Script call: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/ha_triggers.yaml#L39
+## Script call: https://github.com/maattdiy/home-assistant-config/blob/master/config/packages/summary.yaml
 
 ## Resources:
 ## https://home-assistant.io/components/python_script/
@@ -15,18 +15,22 @@ group_desc = ''
 summary = ''
 idx = 0
 
+if debug:
+    logger.error("\n\nSUMMARY: Start\n\n")
+
 ##################################################
 ## Groups summary (people and devices)
 ## Groups config: https://github.com/maattdiy/home-assistant-config/blob/master/config/groups.yaml#L267
 ##################################################
 
-# Entities summary by group name
+# Summary by groups
 groups = ['group.family', 'group.devices_default', 'group.devices_alwayson']
-groups_format = ['{} at home: {}', '{} in use: {}', '!{} offline: {}']
-groups_filter = ['home', 'on|playing', 'off|not_home']
-groups_badge = ['Home', 'In use', 'Alert']
-groups_badge_pic = ['', '', 'bug']
-groups_desc = ['Nobody in home', '', '']
+groups_format = ['{} at home: {}', '{} in use: {}', '!{} to check it out: {}'] # Message prefix
+groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
+groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
+groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
+groups_min_show = [1, 1, 0] # Mininum count to show
+groups_desc = ['', '', '']
 groups_count = [0, 0, 0]
 
 for group in groups:
@@ -50,8 +54,8 @@ for group in groups:
             group_desc = '{} {} ({}), '.format(group_desc, state.name, time)
     
     # Final format for this group
-    if (group_count > 0):
-        group_desc = groups_format[idx].format(group_count, group_desc[:-2])    
+    if (group_count >= groups_min_show[idx]):
+        group_desc = groups_format[idx].format(group_count, group_desc[:-2])
         groups_desc[idx] = group_desc
         groups_count[idx] = group_count
         
@@ -63,22 +67,36 @@ for group in groups:
 ##################################################
 
 idx = 0
+order = 2
 
 if show_badges:
     for badge in groups_badge:
         if (badge != ''):
             entity_id = 'sensor.{}_badge'.format(badge.replace(' ', '').lower());
-            hidden = False if (groups_count[idx] > 0 or debug) else True
+            hidden = False if (groups_count[idx] >= groups_min_show[idx] or debug) else True
             fname = groups_desc[idx] if debug else ' '
-            picture = '/local/badges/{}.png'.format(groups_badge_pic[idx].replace(' ', '').lower()) if (groups_badge_pic[idx] != '') else ''
+            picture = groups_badge_pic[idx].replace(' ', '').lower()
+            
+            # Check for picture X index/count
+            if (picture != ''):
+                list = picture.split('|')
+                if (len(list) in [1, groups_count[idx]]):
+                    picture = list[len(list)-1]
+                else:
+                    picture = list[groups_count[idx]]
+                
+                if (picture != ''):
+                    picture = '/local/badges/{}.png'.format(picture)
             
             hass.states.set(entity_id, groups_count[idx], {
               'friendly_name': fname,
               'unit_of_measurement': badge, 
               'entity_picture': picture,
-              'hidden': hidden
+              'hidden': hidden,
+              'order': order
             })
-            
+        
+        order = order + 1
         idx = idx + 1
 
 ##################################################
@@ -123,7 +141,8 @@ if (not state is None):
       'entity_picture':  '/local/profiles/{}.png'.format(state.state.replace(' ', '').lower()),
       'friendly_name': ' ',
       'unit_of_measurement': 'Mode',
-      'hidden': hidden
+      'hidden': hidden,
+      'order': order
     })
     
     if not hidden:
@@ -135,12 +154,13 @@ if (not state is None):
 ##################################################
 
 for group_desc in groups_desc:
-    if (group_desc != ''):
+    if (group_desc != '' and not group_desc.endswith(': ')):
         summary = '{}{}\n'.format(summary, group_desc)
 
 summary = '{}\n{}\n{}'.format(summary, alarms_desc, profile_desc)
 
 if show_card:
-    hass.states.set('sensor.summary', summary, {
-      'custom_ui_state_card': 'state-card-value_only'
+    hass.states.set('sensor.summary', '', {
+      'custom_ui_state_card': 'state-card-value_only',
+      'text': summary
     })

@@ -15,7 +15,7 @@ time = "%02d:%02d" % (dt.hour, dt.minute)
 
 # Ignore some names
 msg = state.name
-if (msg == 'None') or (msg.startswith('Set ')):
+if (msg == 'None' or msg.startswith('Set ') or msg.find('HDMI')>0):
     msg = ''
 
 if (msg != '') :

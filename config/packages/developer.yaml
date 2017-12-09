@@ -1,19 +1,18 @@
-## Scripts (Developer) HASS Module
+## Developer scripts/UI Module
 
 ##################################################
 ## Customize
 ##################################################
 
 homeassistant:
-  customize:
-    script.refresh:
-      icon: mdi:refresh
+  customize:    
+    script.reload:
+      icon: mdi:reload
       #show_last_changed: true
     script.ir_learn:
       icon: mdi:remote
       #show_last_changed: true
-      
-          
+
 ##################################################
 ## Groups
 ##################################################
@@ -22,19 +21,21 @@ group:
   developer:
     name: Developer
     entities:
-      - script.mode_normal
-      - script.refresh
+      - script.reload
       - script.ir_learn
+      - input_select.activity
+      - input_select.ha_mode
+      - script.restart_ha
 
 ##################################################
 ## Scripts
 ##################################################
 
 script:
-  refresh:
-    alias: Refresh
-    sequence:
-      - service: homeassistant.reload_core_config
-      - service: frontend.reload_themes
-      - service: python_script.reload
+  reload:
+    alias: Reload
+    sequence:            
       - service: python_script.summary
+      #- service: python_script.reload
+      #- service: homeassistant.reload_core_config
+      #- service: frontend.reload_themes
