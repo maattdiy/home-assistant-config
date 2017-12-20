@@ -29,8 +29,8 @@ groups_format = ['{} at home: {}', '{} in use: {}', '!{} to check it out: {}'] #
 groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
 groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
 groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
-groups_min_show = [1, 1, 0] # Mininum count to show
-groups_desc = ['', '', '']
+groups_min_show = [0, 1, 0] # Mininum count to show
+groups_desc = ['!Nobody in home', '', '+The system is ok'] # Can set the default description, for use in case count = 0
 groups_count = [0, 0, 0]
 
 for group in groups:
@@ -55,7 +55,11 @@ for group in groups:
     
     # Final format for this group
     if (group_count >= groups_min_show[idx]):
-        group_desc = groups_format[idx].format(group_count, group_desc[:-2])
+        if (group_count == 0):
+            group_desc = groups_desc[idx]
+        else:
+            group_desc = groups_format[idx].format(group_count, group_desc[:-2])
+        
         groups_desc[idx] = group_desc
         groups_count[idx] = group_count
         

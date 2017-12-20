@@ -1,6 +1,6 @@
 # Get params
 event = data.get('event')
-#logger.error("LAST CMD: " + str(event))
+# logger.error("LAST CMD: " + str(event))
 # Sample: <Event call_service[L]: service_data=, service_call_id=78356624-86, service=mp_playpause, domain=script>
 
 # Find the script name. TODO: Is it possible do with regex, dictionary, json...?
@@ -13,8 +13,12 @@ state = hass.states.get(entity_id)
 dt = datetime.datetime.now() #state.attributes.get('last_triggered')
 time = "%02d:%02d" % (dt.hour, dt.minute)
 
+try:
+    msg = state.name
+except:
+    msg = ''
+
 # Ignore some names
-msg = state.name
 if (msg == 'None' or msg.startswith('Set ') or msg.find('HDMI')>0):
     msg = ''
 

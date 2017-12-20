@@ -47,11 +47,12 @@ panel_iframe: !include config/iframes.yaml
 frontend: !include config/frontend.yaml
 python_script:
 config:
+cloud:
 updater:
 discovery:
 conversation:
 shopping_list:
-#map:
+map:
 
 recorder: !include config/recorder.yaml
 logbook: !include config/logbook.yaml

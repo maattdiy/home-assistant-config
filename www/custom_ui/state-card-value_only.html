@@ -23,9 +23,16 @@ https://github.com/home-assistant/home-assistant-polymer/blob/master/src/compone
         text-align: left;
         line-height: 20px;
       }
-      .atention {
+      .red {
         @apply(--paper-font-body1);
         color: var(--google-red-500);
+        margin-left: 8px;
+        text-align: left;
+        line-height: 20px;
+      }
+      .green {
+        @apply(--paper-font-body1);
+        color: var(--google-green-500);
         margin-left: 8px;
         text-align: left;
         line-height: 20px;
@@ -66,6 +73,7 @@ Polymer({
       switch(value.substring(0,1)) {
       case "*":
       case "!":
+      case "+":
           return value.substring(1);
       default:
           return value;
@@ -75,7 +83,8 @@ Polymer({
   computeClass: function (item) {
       switch(item.trim().substring(0,1)) {
       case "*": return "bold";
-      case "!": return "atention";
+      case "!": return "red";
+      case "+": return "green";
       default:  return "normal";
       }
   },
