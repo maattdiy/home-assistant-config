@@ -17,7 +17,6 @@
 *.session
 www/people/*.png
 
-customize.yaml
 automations.yaml
 secrets.yaml
 known_devices.yaml

@@ -1,0 +1,4 @@
+group.summary:
+  order: 20
+group.remote_control:
+  order: 1

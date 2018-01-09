@@ -1,0 +1,10 @@
+
+##################################################
+## Scripts
+##################################################
+
+  script.test1:
+    icon: mdi:playlist-check
+  script.test2:
+    icon: mdi:playlist-check
+
