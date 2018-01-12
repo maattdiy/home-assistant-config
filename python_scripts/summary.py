@@ -16,7 +16,8 @@ summary = ''
 idx = 0
 
 if debug:
-    logger.error("\n\nSUMMARY: Start\n\n")
+    event = data.get('event')
+    logger.error("\n\nSUMMARY: " + str(event))
 
 ##################################################
 ## Groups summary (people and devices)
@@ -29,8 +30,9 @@ groups_format = ['{} at home: {}', '{} in use: {}', '!{} to check it out: {}'] #
 groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
 groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
 groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
-groups_min_show = [0, 1, 0] # Mininum count to show
-groups_desc = ['!Nobody in home', '', '+The system is ok'] # Can set the default description, for use in case count = 0
+groups_min_show = [0, 1, 1] # Mininum count to show
+groups_desc = ['!Nobody in home', '', ''] # Can set the default description, for use in case count = 0
+#groups_desc = ['!Nobody in home', '', '+System ok']
 groups_count = [0, 0, 0]
 
 for group in groups:
@@ -150,7 +152,26 @@ if (not state is None):
     })
     
     if not hidden:
-        profile_desc = '{}*{} profile is activated\n'.format(summary, state.state)
+        profile_desc = '*{} profile is activated'.format(state.state)
+
+##################################################
+## Activity
+## Package: https://github.com/maattdiy/home-assistant-config/blob/master/python_scripts/activity.py
+##################################################
+
+activity_desc = ''
+state = hass.states.get('input_select.activity')
+time = '?'
+
+if (not state is None):
+    if (state.state != 'Unknown'):
+        dt = hass.states.get('automation.activity_change').attributes.get('last_triggered')        
+        if (not dt is None):
+            time = "%02d:%02d" % (dt.hour, dt.minute)
+        
+        # Alternative way for time
+        #time = hass.states.get('sensor.activity_badge').attributes.get('friendly_name')
+        activity_desc = 'Activity: {} ({})'.format(state.state, time)
 
 ##################################################
 ## Summary update
@@ -161,7 +182,7 @@ for group_desc in groups_desc:
     if (group_desc != '' and not group_desc.endswith(': ')):
         summary = '{}{}\n'.format(summary, group_desc)
 
-summary = '{}\n{}\n{}'.format(summary, alarms_desc, profile_desc)
+summary = '{}\n{}\n{}\n{}'.format(summary, alarms_desc, profile_desc, activity_desc)
 
 if show_card:
     hass.states.set('sensor.summary', '', {

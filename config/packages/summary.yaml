@@ -19,6 +19,8 @@ automation:
     action:
       - delay: 00:00:02
       - service: python_script.summary
+        data_template:
+          event: "{{ trigger.event }}"
 
   # Call service trigger (Switch)
   - alias: 'Call Service Event (Switch)'
@@ -32,6 +34,8 @@ automation:
     action:
       - delay: 00:00:02
       - service: python_script.summary
+        data_template:
+          event: "{{ trigger.event }}"
       
   # Time interval update (each 1 minute)
   - alias: 'Time interval updates'

@@ -42,7 +42,10 @@ automation:
       - service: python_script.activity
         data_template:
           event: "{{ trigger.event }}"
-    
+      - service: python_script.summary
+        data_template:
+          event: "{{ trigger.event }}"
+          
   # Trigger
   - alias: 'Call Script Event'
     hide_entity: True

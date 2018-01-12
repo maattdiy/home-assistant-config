@@ -281,7 +281,7 @@ devices_alwayson:
   name: Devices (Always On)
   entities:
     - sensor.broadlink_template
-    #- sensor.androidtv_template
+    - sensor.androidtv_template
     
 devices_default:
   name: Devices (Default)
