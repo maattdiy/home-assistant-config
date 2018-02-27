@@ -7,7 +7,7 @@
 homeassistant:
   customize:
     sensor.quote:
-      custom_ui_state_card: state-card-value_only
+      custom_ui_state_card: state-card-text
 
 ##################################################
 ## Sensors

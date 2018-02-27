@@ -1,6 +1,6 @@
 test2:  
   alias: Test 2
   sequence:
-    - service: broadlink.send_packet_192_168_0_107
+    - service: switch.broadlink_send_packet_192_168_0_3
       data:
         packet: 'JgBIAAABIZMRExITEjYSExMRERURExEUEDkRNxEUEjYSNhM3ETcSNxITETgSNhI2ExMQExE4ETYSNxIUERMSExE4ETcRFBETEQANBQ=='

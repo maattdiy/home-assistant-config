@@ -18,11 +18,14 @@ try:
 except:
     msg = ''
 
-# Ignore some names
+if (msg is None):
+    msg = ''
+
+# Ignore some names    
 if (msg == 'None' or msg.startswith('Set ') or msg.find('HDMI')>0):
     msg = ''
 
-if (msg != '') :
+if (msg != ''):
     # Sensor update
     hass.states.set('sensor.last_command', '{} - {}'.format(time, msg), {
         'custom_ui_state_card': 'state-card-value_only'

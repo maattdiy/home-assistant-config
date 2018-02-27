@@ -1,7 +1,7 @@
 ## https://home-assistant.io/components/logger/
 ## critical fatal error warning warn info debug notset
 
-  default: error
+  default: info
   logs:
     homeassistant.setup: fatal
     homeassistant.loader: fatal
@@ -12,6 +12,6 @@
     homeassistant.helpers.entity: fatal
     
     netdisco.ssdp: fatal
-    homeassistant.components.telegram_bot.polling: fatal    
+    homeassistant.components.telegram_bot.polling: error
     homeassistant.components.device_tracker.mqtt: warning
     homeassistant.components.websocket_api: warning

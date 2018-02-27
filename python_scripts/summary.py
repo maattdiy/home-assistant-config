@@ -31,6 +31,7 @@ groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
 groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
 groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
 groups_min_show = [0, 1, 1] # Mininum count to show
+groups_theme = ['entity_green', 'entity_purple', 'if (value >= 2) return "entity_red"; else return "entity_orange"'] # Theme template
 groups_desc = ['!Nobody in home', '', ''] # Can set the default description, for use in case count = 0
 #groups_desc = ['!Nobody in home', '', '+System ok']
 groups_count = [0, 0, 0]
@@ -82,6 +83,7 @@ if show_badges:
             hidden = False if (groups_count[idx] >= groups_min_show[idx] or debug) else True
             fname = groups_desc[idx] if debug else ' '
             picture = groups_badge_pic[idx].replace(' ', '').lower()
+            theme = groups_theme[idx].replace('value', 'entities["{}"].state'.format(entity_id)) if (groups_theme[idx] != '') else 'default'
             
             # Check for picture X index/count
             if (picture != ''):
@@ -99,8 +101,10 @@ if show_badges:
               'unit_of_measurement': badge, 
               'entity_picture': picture,
               'hidden': hidden,
-              'order': order
+              'templates': { 'theme': theme }
             })
+            # Order seems not working
+            # 'order': order
         
         order = order + 1
         idx = idx + 1
@@ -175,7 +179,7 @@ if (not state is None):
 
 ##################################################
 ## Summary update
-## Custom card: https://github.com/maattdiy/home-assistant-config/blob/master/www/custom_ui/state-card-value_only.html
+## Custom card: https://github.com/maattdiy/home-assistant-config/blob/master/www/custom_ui/state-card-text.html
 ##################################################
 
 for group_desc in groups_desc:
@@ -186,6 +190,6 @@ summary = '{}\n{}\n{}\n{}'.format(summary, alarms_desc, profile_desc, activity_d
 
 if show_card:
     hass.states.set('sensor.summary', '', {
-      'custom_ui_state_card': 'state-card-value_only',
+      'custom_ui_state_card': 'state-card-text',
       'text': summary
     })

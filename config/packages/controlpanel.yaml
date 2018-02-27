@@ -15,7 +15,7 @@
 homeassistant:
   customize:
     sensor.kodi_template:
-      custom_ui_state_card: state-card-value_only
+      custom_ui_state_card: state-card-text
     
     # Control Panel
     script.remote_control:
@@ -26,10 +26,9 @@ homeassistant:
         column_width: 62px
         gap: 15px
         color: '#555B65'
-        color_on: '#D5D619'
+        color_on: '#F0C209'
         #color_on: 'var(--primary-color)'
-        #color_on: '#262B38'
-        color_off: '#BBBEC2'
+        color_off: '#555B65'
         entities:
           # Favorites
           - entity: script.automagic
@@ -41,56 +40,52 @@ homeassistant:
             column: 2
             row: 1
           - entity: script.sleep
-            label: 25m
+            label: 1h
             column: 3
             row: 1
-          - entity: script.sleep
-            label: 2h
-            column: 4
-            row: 1
-            
-          # TV
           - entity: switch.tv
             caption: 
             icon: mdi:monitor
-            column: 1
-            row: 2
-          - entity: script.tv_h1
-            icon: mdi:android
-            column: 2
-            row: 2
-          - entity: script.tv_antena
-            icon: mdi:radio-tower
-            column: 3
-            row: 2
-          - entity: script.tv_voldown
-            icon: mdi:mdi:volume-medium
             column: 4
-            row: 2            
-          - entity: script.tv_volup
-            icon: mdi:mdi:volume-high
-            column: 5
-            row: 2
-          - entity: switch.tv_mute
-            icon: mdi:volume-off
-            column: 6
-            row: 2
-            
-          # AC
+            row: 1
           - entity: switch.ac
             caption: 
             icon: mdi:fan
+            column: 5
+            row: 1
+          
+          # TV
+          - entity: script.tv_h1
+            icon: mdi:android
             column: 1
-            row: 3
+            row: 2
+          - entity: script.tv_antena
+            icon: mdi:radio-tower
+            column: 2
+            row: 2
+          - entity: script.tv_voldown
+            icon: mdi:mdi:volume-medium
+            column: 3
+            row: 2            
+          - entity: script.tv_volup
+            icon: mdi:mdi:volume-high
+            column: 4
+            row: 2
+          - entity: switch.tv_mute
+            icon: mdi:volume-off
+            column: 5
+            row: 2
+          
+          # AC
           - entity: script.ac_hot
             icon: mdi:white-balance-sunny
             color: '#FF6633'
-            column: 2
+            column: 1
             row: 3
           - entity: script.ac_cold
             icon: mdi:mdi:snowflake
             color: '#4FA7FF'
-            column: 3
+            column: 2
             row: 3
             
             
@@ -105,53 +100,66 @@ homeassistant:
         color: '#555B65'
         entities:
           # Line 1
-          - entity: script.kodi_cmd
-            data: { value: Input.Home }
-            icon: mdi:home
+          - entity: script.kodi_play_something
+            icon: mdi:library-music
             column: 1
             row: 1
+          - entity: script.kodi_tvshows
+            icon: mdi:mdi:movie
+            column: 2
+            row: 1
+          - entity: script.kodi_tv_off
+            icon: mdi:mdi:power
+            column: 3
+            row: 1
+          
+          # Line 2
+          - entity: script.kodi_home
+            icon: mdi:home
+            column: 1
+            row: 2
           - entity: script.kodi_cmd
             data: { value: Input.Up }
             icon: mdi:arrow-up
             column: 2
-            row: 1
+            row: 2
           - entity: script.kodi_playpause
             icon: mdi:play-pause
-            column: 3
-            row: 1          
-            
-          # Line 2
-          - entity: script.kodi_cmd
-            data: { value: Input.Left }
-            icon: mdi:arrow-left
-            column: 1
-            row: 2
-          - entity: script.kodi_cmd
-            data: { value: Input.ExecuteAction }
-            icon: mdi:circle-outline
-            column: 2
-            row: 2
-          - entity: script.kodi_cmd
-            data: { value: Input.Right }
-            icon: mdi:arrow-right
             column: 3
             row: 2
             
           # Line 3
           - entity: script.kodi_cmd
+            data: { value: Input.Left }
+            icon: mdi:arrow-left
+            column: 1
+            row: 3
+          - entity: script.kodi_cmd
+            data: { value: Input.ExecuteAction }
+            icon: mdi:circle-outline
+            column: 2
+            row: 3
+          - entity: script.kodi_cmd
+            data: { value: Input.Right }
+            icon: mdi:arrow-right
+            column: 3
+            row: 3
+            
+          # Line 4
+          - entity: script.kodi_cmd
             data: { value: Input.Back }
             icon: mdi:keyboard-return
             column: 1
-            row: 3
+            row: 4
           - entity: script.kodi_cmd
             data: { value: Input.Down }
             icon: mdi:arrow-down
             column: 2
-            row: 3
-          - entity: script.kodi_stop
+            row: 4
+          - entity: script.kodi_tvshow
             icon: mdi:volume-off
             column: 3
-            row: 3
+            row: 4
             
     # Moods
     script.remote_control_moods:
@@ -180,7 +188,7 @@ homeassistant:
             label: '80s'
             column: 3
             row: 1
-          - entity: script.mp_nature
+          - entity: script.kodi_play_tvshow01
             icon: mdi:tree
             column: 4
             row: 1

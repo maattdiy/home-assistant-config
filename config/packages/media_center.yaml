@@ -9,7 +9,6 @@ homeassistant:
     sensor.tv_schedule_dw:
       friendly_name: 'TV Dw'
       icon: mdi:airplay
-      #custom_ui_state_card: value_only
 
 ##################################################
 ## Sensors

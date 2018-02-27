@@ -20,17 +20,17 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = 'customizer'
 DEPENDENCIES = ['frontend']
 
-CONF_PANEL = 'panel'
 CONF_CUSTOM_UI = 'custom_ui'
 
 LOCAL = 'local'
 HOSTED = 'hosted'
+DEBUG = 'debug'
 
-CONF_HIDE_CUSTOMUI_ATTRIBUTES = 'hide_customui_attributes'
 CONF_HIDE_ATTRIBUTES = 'hide_attributes'
 
 CONF_ATTRIBUTE = 'attribute'
 CONF_VALUE = 'value'
+CONF_COLUMNS = 'columns'
 
 SERVICE_SET_ATTRIBUTE = 'set_attribute'
 SERVICE_SET_ATTRIBUTE_SCHEMA = vol.Schema({
@@ -41,70 +41,51 @@ SERVICE_SET_ATTRIBUTE_SCHEMA = vol.Schema({
 
 CONFIG_SCHEMA = vol.Schema({
     DOMAIN: vol.Schema({
-        vol.Optional(CONF_PANEL): cv.boolean,
         vol.Optional(CONF_CUSTOM_UI): cv.string,
-        vol.Optional(CONF_HIDE_CUSTOMUI_ATTRIBUTES, default=True): cv.boolean,
+        vol.Optional(CONF_COLUMNS): [int],
         vol.Optional(CONF_HIDE_ATTRIBUTES):
             vol.All(cv.ensure_list, [cv.string]),
     })
 }, extra=vol.ALLOW_EXTRA)
 
 
-@callback
-def maybe_load_panel(hass, conf_panel):
-    """Maybe load CustomUI panel. Async friendly."""
-    if conf_panel is True and MINOR_VERSION <= 52:
-        frontend.register_panel(
-            hass,
-            "custom-ui",
-            hass.config.path('panels/ha-panel-custom-ui.html'),
-            sidebar_title="Custom UI",
-            sidebar_icon="mdi:domain"
-        )
-    elif conf_panel is not None:
-        _LOGGER.error('%s setting is deprecated.'
-                      'Starting from HA 0.53 it is auto-added to config panel',
-                      CONF_PANEL)
-
-
 @asyncio.coroutine
 def async_setup(hass, config):
     """Set up customizer."""
-    maybe_load_panel(hass, config[DOMAIN].get(CONF_PANEL))
-
     custom_ui = config[DOMAIN].get(CONF_CUSTOM_UI)
     if MINOR_VERSION < 53 and custom_ui is not None:
         _LOGGER.warning('%s is only supported from Home Assistant 0.53',
                         CONF_CUSTOM_UI)
     elif custom_ui is not None:
+        def add_extra_html_url(base_url):
+            """Add extra url using version-dependent function."""
+            if MINOR_VERSION >= 59:
+                frontend.add_extra_html_url(
+                    hass, '{}.html'.format(base_url), False)
+                frontend.add_extra_html_url(
+                    hass, '{}-es5.html'.format(base_url), True)
+            else:
+                frontend.add_extra_html_url(hass, '{}.html'.format(base_url))
+
         if custom_ui == LOCAL:
-            frontend.add_extra_html_url(
-                hass,
-                '/local/custom_ui/state-card-custom-ui.html')
+            add_extra_html_url('/local/custom_ui/state-card-custom-ui')
         elif custom_ui == HOSTED:
-            frontend.add_extra_html_url(
-                hass,
+            add_extra_html_url(
                 'https://raw.githubusercontent.com/andrey-git/'
-                'home-assistant-custom-ui/master/state-card-custom-ui.html')
+                'home-assistant-custom-ui/master/state-card-custom-ui')
+        elif custom_ui == DEBUG:
+            add_extra_html_url(
+                'https://raw.githubusercontent.com/andrey-git/'
+                'home-assistant-custom-ui/master/'
+                'state-card-custom-ui-dbg')
         else:
-            frontend.add_extra_html_url(
-                hass,
+            add_extra_html_url(
                 'https://github.com/andrey-git/home-assistant-custom-ui/'
-                'releases/download/{}/state-card-custom-ui.html'
+                'releases/download/{}/state-card-custom-ui'
                 .format(custom_ui))
 
     component = EntityComponent(_LOGGER, DOMAIN, hass)
-    if not config[DOMAIN][CONF_HIDE_CUSTOMUI_ATTRIBUTES]:
-        if MINOR_VERSION >= 53:
-            _LOGGER.error(
-                '%s is deprecated. '
-                'Starting from HA 0.53 it is always treated as True',
-                CONF_HIDE_CUSTOMUI_ATTRIBUTES)
-    yield from component.async_add_entity(CustomizerEntity(config[DOMAIN]))
-
-    descriptions = yield from hass.async_add_job(
-        load_yaml_config_file, os.path.join(
-            os.path.dirname(__file__), 'services.yaml'))
+    yield from component.async_add_entities([CustomizerEntity(config[DOMAIN])])
 
     @callback
     def set_attribute(call):
@@ -126,10 +107,18 @@ def async_setup(hass, config):
             state_attributes[attribute] = value
         hass.states.async_set(entity_id, state.state, state_attributes)
 
-    hass.services.async_register(DOMAIN, SERVICE_SET_ATTRIBUTE,
-                                 set_attribute,
-                                 descriptions[SERVICE_SET_ATTRIBUTE],
-                                 SERVICE_SET_ATTRIBUTE_SCHEMA)
+    if MINOR_VERSION >= 61:
+        hass.services.async_register(DOMAIN, SERVICE_SET_ATTRIBUTE,
+                                     set_attribute,
+                                     SERVICE_SET_ATTRIBUTE_SCHEMA)
+    else:
+        descriptions = yield from hass.async_add_job(
+            load_yaml_config_file, os.path.join(
+                os.path.dirname(__file__), 'services.yaml'))
+        hass.services.async_register(DOMAIN, SERVICE_SET_ATTRIBUTE,
+                                     set_attribute,
+                                     descriptions[SERVICE_SET_ATTRIBUTE],
+                                     SERVICE_SET_ATTRIBUTE_SCHEMA)
 
     return True
 
@@ -139,9 +128,8 @@ class CustomizerEntity(Entity):
 
     def __init__(self, config):
         """Constructor that parses the config."""
-        self.hide_customui_attributes = config.get(
-            CONF_HIDE_CUSTOMUI_ATTRIBUTES)
         self.hide_attributes = config.get(CONF_HIDE_ATTRIBUTES)
+        self.columns = config.get(CONF_COLUMNS)
 
     @property
     def hidden(self):
@@ -157,8 +145,8 @@ class CustomizerEntity(Entity):
     def state_attributes(self):
         """Return the state attributes."""
         result = {}
-        if self.hide_customui_attributes:
-            result[CONF_HIDE_CUSTOMUI_ATTRIBUTES] = True
         if self.hide_attributes:
             result[CONF_HIDE_ATTRIBUTES] = self.hide_attributes
+        if self.columns:
+            result[CONF_COLUMNS] = self.columns
         return result

@@ -1,11 +1,22 @@
 ## https://community.home-assistant.io/c/projects/themes
 ## https://community.home-assistant.io/t/dark-theme-or-night-mode-theme/446/56
 
-custom:
-  primary-color: '#36454f'
-  label-badge-red: 'var(--primary-color)'
 
-  
+## Per entity theming (Custom UI)
+## https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/features.md#per-entity-theming
+## https://github.com/andrey-git/home-assistant-custom-ui/blob/master/docs/templates.md#examples
+entity_green:
+  label-badge-red: 'green'
+entity_red:
+  label-badge-red: 'red'
+entity_yellow:
+  label-badge-red: '#DC5E0C'
+entity_orange:
+  label-badge-red: '#B95617'
+entity_purple:
+  label-badge-red: '#B2098B'
+
+## Full custom themes
 darkblue:
   # Main colors
   primary-color: '#1675C9'                                                        # Header

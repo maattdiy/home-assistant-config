@@ -6,5 +6,5 @@ logger.error("TELEGRAM: " + event)
 
 # Sensor update
 hass.states.set('sensor.summary', '', {
-    'custom_ui_state_card': 'state-card-value_only'
+    'custom_ui_state_card': 'state-card-text'
 })

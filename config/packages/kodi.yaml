@@ -4,8 +4,9 @@
 ## Resources:
 ## https://home-assistant.io/components/media_player.kodi/
 ## https://home-assistant.io/cookbook/automation_kodi_dynamic_input_select/
-## http://kodi.wiki/view/JSON-RPC_API/v6
 ## https://forum.kodi.tv/showthread.php?tid=157996
+## https://forum.kodi.tv/showthread.php?tid=210549
+## http://kodi.wiki/view/JSON-RPC_API/v6
 ## http://kodi.wiki/view/Action_IDs
 
 
@@ -85,7 +86,7 @@ sensor:
     sensors:
       kodi_template:
         friendly_name: 'Kodi'
-        value_template: "It's {{ states.media_player.kodi.attributes.media_content_type }} • {{ states.media_player.kodi.attributes.media_title }}"
+        value_template: "{{ states.media_player.kodi.attributes.media_title }}"
         icon_template: 'mdi:kodi'
         #icon_template: "{{ 'mdi:kodi' if is_state('media_player.kodi', 'playing') else 'mdi:close-circle' }}"
 
@@ -96,6 +97,7 @@ sensor:
 
 automation:
   - alias: "Kodi Playing"
+    initial_state: 'off'
     trigger:
       - platform: state
         entity_id: media_player.kodi
@@ -104,6 +106,7 @@ automation:
       - service: script.kodi_tv_on
 
   - alias: Kodi Volume
+    initial_state: 'on'
     trigger:
       platform: state
       entity_id: input_number.kodi_volume
@@ -131,7 +134,16 @@ script:
         entity_id: switch.tv
       - delay: 00:00:05
       - service: script.tv_h1
-  
+
+  # TV Off
+  kodi_tv_off:
+    alias: Kodi turn off TV
+    sequence:
+      - service: script.kodi_home
+      - delay: 00:00:01
+      - service: switch.turn_off
+        entity_id: switch.tv      
+
   # Play something (Party Mode)
   kodi_play_something:
     alias: Kodi Play Something
@@ -164,6 +176,18 @@ script:
           entity_id: media_player.kodi
           method: "{{ value }}"
 
+  # TV Show
+  kodi_tvshows:
+    alias: Kodi TV Show
+    sequence:
+      - service: media_player.kodi_call_method
+        data_template:
+          entity_id: media_player.kodi
+          method: Addons.ExecuteAddon
+          addonid: script.tv.show.last.episode
+      - delay: 00:00:02
+      - service: script.kodi_tv_on
+  
   # Addon
   kodi_addon:
     alias: Kodi Addon
@@ -175,7 +199,7 @@ script:
           addonid: "{{ value }}"
           params:
             command: activate
-
+  
   # Play/Puase
   kodi_playpause:
     alias: Kodi Play/Pause
@@ -195,6 +219,31 @@ script:
           entity_id: media_player.kodi
           method: Player.Stop
           playerid: 0
+  
+  # Home
+  kodi_home:
+    alias: Kodi Home
+    sequence:
+      - service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Player.Stop
+          playerid: 0
+      - service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Input.Home
+      - service: script.kodi_tv_on
+  
+  # Test
+  kodi_test:
+    alias: Kodi Test
+    sequence:
+      - service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: GUI.ActivateWindow
+          window: Videos,videodb://recentlyaddedepisodes/
   
   # Update Library
   kodi_update_library:
@@ -216,3 +265,20 @@ script:
         data:
           entity_id: media_player.kodi
           method: AudioLibrary.Clean
+          
+##################################################
+## Specified shows
+##################################################
+  
+  # Flash
+  kodi_play_tvshow01:
+    alias: Kodi Play Playlist
+    sequence:
+      - service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Player.Open
+          item:
+            file: "file:///MNT/USB_STORAGE/USB_DISK1/HDBKP/Multimedia/WhiteNoise/Fireplace.mp4"
+          options:
+            resume: True

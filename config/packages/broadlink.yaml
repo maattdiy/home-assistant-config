@@ -68,5 +68,5 @@ script:
   ir_learn:
     alias: Learn IR
     sequence:
-      - service: broadlink.learn_command_192_168_0_3
+      - service: switch.broadlink_learn_command_192_168_0_3
 

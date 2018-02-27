@@ -12,10 +12,8 @@ homeassistant:
       friendly_name: 'Weather'
     sensor.dark_sky_hourly_summary:
       friendly_name: 'Weather next'
-      #custom_ui_state_card: value_only
     sensor.dark_sky_daily_summary:
       friendly_name: 'Weather week'
-      #custom_ui_state_card: value_only
     sensor.dark_sky_wind_speed:
       friendly_name: 'Wind speed'
     sensor.dark_sky_precip_intensity:

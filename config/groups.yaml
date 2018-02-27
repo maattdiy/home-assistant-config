@@ -13,11 +13,18 @@ default_view:
     - sensor.inuse_badge
     - sensor.status_badge
     - sensor.profile_badge
-    - group.remote_control
-    - group.remote_control_kodi
-    - group.remote_control_moods
+    - group.remote_control    
     - group.summary
     - group.developer
+    - group.quote
+
+remote_kodi:
+  view: yes
+  name: Remote
+  icon: mdi:remote
+  entities:
+    - group.remote_control_kodi
+    - group.remote_control_moods
 
 home:
   view: yes
@@ -30,11 +37,8 @@ home:
     #- device_tracker.iphonedemario
     - sensor.dark_sky_temperature
     - sensor.dark_sky_hourly_summary
-    #- sensor.dark_sky_daily_summary
     - alarm_control_panel.ha_alarm
     - sensor.countdown1_days
-    #- group.summary
-    #- group.scenes
     - group.living
     - group.office
     - history_graph.people
