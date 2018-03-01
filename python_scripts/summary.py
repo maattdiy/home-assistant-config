@@ -14,6 +14,7 @@ group_count = 0
 group_desc = ''
 summary = ''
 idx = 0
+dt_prevstate = None
 
 if debug:
     event = data.get('event')
@@ -31,7 +32,7 @@ groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
 groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
 groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
 groups_min_show = [0, 1, 1] # Mininum count to show
-groups_theme = ['entity_green', 'entity_purple', 'if (value >= 2) return "entity_red"; else return "entity_orange"'] # Theme template
+groups_theme = ['entity_green', 'entity_purple', 'entity_green|entity_orange|entity_red'] # Theme template
 groups_desc = ['!Nobody in home', '', ''] # Can set the default description, for use in case count = 0
 #groups_desc = ['!Nobody in home', '', '+System ok']
 groups_count = [0, 0, 0]
@@ -46,7 +47,7 @@ for group in groups:
         
         if (state.state in filter.split('|') or debug):
             dt = state.last_changed
-            dt = dt + datetime.timedelta(hours=-2) # For time zone :( How to do native?
+            dt = dt + datetime.timedelta(hours=-3) # For time zone :( How to do native?
             time = '%02d:%02d' % (dt.hour, dt.minute)
             
             # If state changed in the past days show the date too
@@ -55,11 +56,21 @@ for group in groups:
             
             group_count = group_count + 1
             group_desc = '{} {} ({}), '.format(group_desc, state.name, time)
-    
+        else:
+            if (dt_prevstate is None):
+                dt_prevstate = state.last_changed
+            else:
+                if (state.last_changed > dt_prevstate):
+                    dt_prevstate = state.last_changed
+            
     # Final format for this group
     if (group_count >= groups_min_show[idx]):
         if (group_count == 0):
             group_desc = groups_desc[idx]
+            # If there is none 'On/Home' state in group, show since...
+            if (group_desc != ''):
+                dt = dt_prevstate + datetime.timedelta(hours=-3)
+                group_desc = '{} since {}'.format(group_desc, '%02d:%02d' % (dt.hour, dt.minute))
         else:
             group_desc = groups_format[idx].format(group_count, group_desc[:-2])
         
@@ -84,6 +95,14 @@ if show_badges:
             fname = groups_desc[idx] if debug else ' '
             picture = groups_badge_pic[idx].replace(' ', '').lower()
             theme = groups_theme[idx].replace('value', 'entities["{}"].state'.format(entity_id)) if (groups_theme[idx] != '') else 'default'
+            
+            # Check for theme X index/count
+            if (theme.find('|') > 0):
+                list = theme.split('|')
+                if (len(list) in [1, groups_count[idx]]):
+                    theme = list[len(list)-1]
+                else:
+                    theme = list[groups_count[idx]]
             
             # Check for picture X index/count
             if (picture != ''):
