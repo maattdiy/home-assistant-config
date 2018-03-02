@@ -28,12 +28,12 @@ if debug:
 # Summary by groups
 groups = ['group.family', 'group.devices_default', 'group.devices_alwayson']
 groups_format = ['{} at home: {}', '{} in use: {}', '!{} to check it out: {}'] # Message prefix
-groups_filter = ['home', 'on|playing', 'off|not_home'] # Filter to list
+groups_filter = ['homex', 'on|playing', 'off|not_home'] # Filter to list
 groups_badge = ['Home', 'In use', 'Status'] # Badge 'belt' (unit_of_measurement)
 groups_badge_pic = ['', '', 'ok|bug|critical'] # Pictures: none, on picure or a list of picture (in this case the picture position will match the count)
 groups_min_show = [0, 1, 1] # Mininum count to show
 groups_theme = ['entity_green', 'entity_purple', 'entity_green|entity_orange|entity_red'] # Theme template
-groups_desc = ['!Nobody in home', '', ''] # Can set the default description, for use in case count = 0
+groups_desc = ['!Nobody in home since ', '', ''] # Can set the default description, for use in case count = 0
 #groups_desc = ['!Nobody in home', '', '+System ok']
 groups_count = [0, 0, 0]
 
@@ -60,17 +60,18 @@ for group in groups:
             if (dt_prevstate is None):
                 dt_prevstate = state.last_changed
             else:
-                if (state.last_changed > dt_prevstate):
-                    dt_prevstate = state.last_changed
+                if (not state.last_changed is None):
+                    if (state.last_changed > dt_prevstate):
+                        dt_prevstate = state.last_changed
             
     # Final format for this group
     if (group_count >= groups_min_show[idx]):
         if (group_count == 0):
             group_desc = groups_desc[idx]
-            # If there is none 'On/Home' state in group, show since...
-            if (group_desc != ''):
+            # If need to show since (for people, where there is none 'On/Home' state in group)
+            if (group_desc.find(' since ') > 0):
                 dt = dt_prevstate + datetime.timedelta(hours=-3)
-                group_desc = '{} since {}'.format(group_desc, '%02d:%02d' % (dt.hour, dt.minute))
+                group_desc = '{}{}'.format(group_desc, '%02d:%02d' % (dt.hour, dt.minute))
         else:
             group_desc = groups_format[idx].format(group_count, group_desc[:-2])
         
@@ -120,6 +121,7 @@ if show_badges:
               'unit_of_measurement': badge, 
               'entity_picture': picture,
               'hidden': hidden,
+              'state_card_mode': 'badges',
               'templates': { 'theme': theme }
             })
             # Order seems not working

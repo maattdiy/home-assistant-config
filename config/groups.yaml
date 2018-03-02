@@ -7,12 +7,7 @@
 default_view:
   view: yes
   icon: mdi:apps
-  entities:
-    - sensor.activity_badge
-    - sensor.home_badge
-    - sensor.inuse_badge
-    - sensor.status_badge
-    - sensor.profile_badge
+  entities:    
     - group.remote_control    
     - group.summary
     - group.developer
@@ -167,6 +162,11 @@ links_down:
 summary:
   name: Summary
   entities:
+    - sensor.activity_badge
+    - sensor.home_badge
+    - sensor.inuse_badge
+    - sensor.status_badge
+    - sensor.profile_badge
     - sensor.summary
 
 internet:
