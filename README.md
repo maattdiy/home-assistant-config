@@ -42,15 +42,31 @@
 ### Config view
 ![Config](https://github.com/maattdiy/home-assistant-config/raw/master/screenshots/config.png)
 
+## Instalation
+
+- Download the last image and flash with Etcher
+- Download the backup from Hass.io Snapshots Google Drive
+- Change the Ip to static
 
 ## Links
 
 **Devices**
 * [Broadlink RM 3 Pro](http://www.ibroadlink.com/rm/)
-
+* [Asus]()
+    - [Merlin releases](https://sourceforge.net/projects/asuswrt-merlin/files/RT-AC86U/Release/)
+    - [SSH setup](https://www.htpcguides.com/enable-ssh-asus-routers-without-ssh-keys/)
+    - https://www.youtube.com/watch?v=tzUnijpJHDY
 
 **Inspiration**
 * [Config from other users here on GitHub](https://github.com/search?o=desc&q=topic%3Ahome-assistant-config&s=stars&type=Repositories)
 
 **Raspberry Pi related**
 * [Awesome Raspberry Pi](https://github.com/thibmaek/awesome-raspberry-pi)
+
+**Tools**
+* Easy way to generate image for a tile: https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+* Color blend: https://meyerweb.com/eric/tools/color-blend/
+* A cute MaterialDesignIcons icon picker for your web browser https://github.com/chteuchteu/MaterialDesignIcons-Picker
+
+**RTTTL**
+https://github.com/technobly/Remote-RTTTL/blob/master/RemoteRTTTL.cpp
